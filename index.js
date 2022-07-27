@@ -1,9 +1,28 @@
 import { ShipFactory } from "./ship.js";
-import { GameboardFactory } from "./gameboard.js"
+import { PlayerFactory } from "./player.js";
+import { GameboardFactory } from "./gameboard.js";
+import { GameFactory } from "./game.js";
 
-console.log('test')
-const battleship = ShipFactory('battleship');
-console.log(battleship)
-// battleship.getStatus()
+console.log('test');
 
-const gameboard = GameboardFactory();
+const game = GameFactory();
+game.createPlayer('luka', 1);
+console.log(game.getActivePlayer())
+console.log(game.gameboard.testFunction())
+
+export {game};
+
+// const battleship = ShipFactory('battleship', 2, 3, 0);
+// console.log(battleship);
+// console.log(battleship.getStatus());
+// console.log(battleship.getPosition())
+
+// const gameboard = GameboardFactory();
+
+// export { gameboard };
+
+/////////////////// PROJECT OUTLINE //////////////////
+
+// Press square
+// Get X and Y coordinates
+// 

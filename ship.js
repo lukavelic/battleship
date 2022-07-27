@@ -1,7 +1,40 @@
-const ShipFactory = (shipType) => {
-    const type = shipType;
+const ShipFactory = (type, x, y, orientation) => {
+    
     let hitcount = 0;
     let isTheShipActive = true;
+
+    // Get ship info
+
+    const getType = () => {
+        return type;
+    };
+
+    const getLength = () => {
+        let length;
+
+        if(type === 'destroyer') length = 2;
+        else if(type === 'submarine') length = 3;
+        else if(type === 'cruiser') length = 3;
+        else if(type === 'battleship') length = 4;
+        else if(type === 'carrier') length = 5;
+
+        return length;
+    }
+
+    const getPosition = () => {
+        const shipPosition = [x, y]
+        return shipPosition;
+    };
+
+    const getOrientation = () => {
+        return orientation;
+    };
+
+    const getStatus = () => {
+        return isTheShipActive;
+    };
+
+    // Gameplay
 
     const getHit = () => {
         hitcount++;
@@ -23,11 +56,7 @@ const ShipFactory = (shipType) => {
         isTheShipActive = false;
     };
 
-    const shipStatus = () => {
-        return isTheShipActive;
-    };
-
-    return {getHit, shipStatus};
+    return {getType, getLength, getStatus, getPosition, getOrientation, getHit, sinkShip};
 };
 
 export {ShipFactory};
