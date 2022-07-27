@@ -1,13 +1,15 @@
-const PlayerFactory = (playerName) => {
-    let turnStatus = false;
+const PlayerFactory = (playerName, id) => {
+    let fleet = [];
 
-    const startTurn = () => {
-        turnStatus = false;
-    }
+    const addShipToFleet = (ship) => {
+        fleet.push(ship);
+    };
 
-    const endTurn = () => {
-        turnStatus = true;
-    }
+    const getFleet = () => {
+        return fleet;
+    };
 
-    return {playerName, startTurn, endTurn};
+    return {playerName, id, addShipToFleet, getFleet};
 }
+
+export {PlayerFactory};
