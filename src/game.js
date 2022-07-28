@@ -3,8 +3,8 @@ import { PlayerFactory } from "./player.js";
 import { ShipFactory } from "./ship.js";
 
 const GameFactory = () => {
-    const gameboard1 = GameboardFactory();
-    const gameboard2 = GameboardFactory();
+    let gameboard1 = GameboardFactory();
+    let gameboard2 = GameboardFactory();
 
     let player1;
     let player2;
@@ -34,10 +34,10 @@ const GameFactory = () => {
 
     const createShip = (type, x, y, shipOrientation) => {
         if (activePlayer = 1) {
-            const ship = ShipFactory(type, x, y, shipOrientation)
+            let ship = ShipFactory(type, x, y, shipOrientation)
             player1.addShipToFleet(ship);
         } else {
-            const ship = ShipFactory(type, x, y, shipOrientation)
+            let ship = ShipFactory(type, x, y, shipOrientation)
             player2.addShipToFleet(ship);
         };
     };
@@ -51,13 +51,10 @@ const GameFactory = () => {
         } else {
             const tileValue = gameboard1.getBoard()[x][y];
             return tileValue;
-        }
-        
+        };
     };
 
-    
-
-    return {gameboard, createPlayer, changeActivePlayer, getActivePlayer}
+    return {gameboard1, gameboard2, createPlayer, changeActivePlayer, getActivePlayer, createShip, checkTile}
 }
 
 export { GameFactory };

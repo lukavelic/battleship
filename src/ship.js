@@ -22,7 +22,28 @@ const ShipFactory = (type, x, y, orientation) => {
     }
 
     const getPosition = () => {
-        const shipPosition = [x, y]
+        const length = getLength();
+        const orientation = getOrientation();
+
+        let shipPosition = [[x,y]]
+
+        for(let i = 1; i <= length; i++) {
+
+            if(orientation === 0) {
+                let tempArr = [x,y-i];
+                shipPosition.push(tempArr);
+            } else if(orientation === 1) {
+                let tempArr = [x+i,y];
+                shipPosition.push(tempArr);
+            } else if(orientation === 2) {
+                let tempArr = [x,y+i];
+                shipPosition.push(tempArr);
+            } else if(orientation === 3) {
+                let tempArr = [x-i,y];
+                shipPosition.push(tempArr);
+            };
+        };
+
         return shipPosition;
     };
 

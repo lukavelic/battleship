@@ -7,8 +7,11 @@ console.log('test');
 
 const game = GameFactory();
 game.createPlayer('luka', 1);
-console.log(game.getActivePlayer())
-console.log(game.gameboard.testFunction())
+console.log(game.getActivePlayer());
+
+const ship = ShipFactory('battleship', 3,2,1);
+
+console.log(ship.getOrientation())
 
 export {game};
 
