@@ -2,18 +2,25 @@ import { ShipFactory } from "./ship.js";
 import { PlayerFactory } from "./player.js";
 import { GameboardFactory } from "./gameboard.js";
 import { GameFactory } from "./game.js";
+import { RenderFactory } from "./render.js";
 
 console.log('test');
 
+const renderDOM = RenderFactory();
 const game = GameFactory();
+
+renderDOM.renderUI();
+renderDOM.renderBoard(1);
+
 game.createPlayer('luka', 1);
-console.log(game.getActivePlayer());
+game.createShip('battleship', 5, 5, 1);
+console.log(game)
+game.checkTile(5,5);
+console.log(game.checkTile(5,5))
 
-const ship = ShipFactory('battleship', 3,2,1);
 
-console.log(ship.getOrientation())
 
-export {game};
+export {game, renderDOM};
 
 // const battleship = ShipFactory('battleship', 2, 3, 0);
 // console.log(battleship);

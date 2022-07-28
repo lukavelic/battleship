@@ -1,0 +1,14 @@
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    height: 500px;
+    width: 500px;
+
+}
+
+    .tile {
+        height: 10%;
+        width: 10%;
+        background-color: red;
+        outline: yellow 1px solid;
+    }

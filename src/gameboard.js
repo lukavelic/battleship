@@ -53,23 +53,23 @@ const GameboardFactory = () => {
         };
     };
 
-    const placeShip = (isValid, activePlayer, x, y, shipLength) => {
+    const placeShip = (isValid, x, y, shipLength) => {
         if(isValid) {
             if(activeOrientation === 0) {
                 for(let i = 0; i < shipLength; i++) {
-                    board[x][y - i] = activePlayer;
+                    board[x][y - i] = 1;
                 };
             } else if(activeOrientation === 1) {
                 for(let i = 0; i < shipLength; i++) {
-                    board[x + i][y] = activePlayer;
+                    board[x + i][y] = 1;
                 };
             } else if(activeOrientation === 2) {
                 for(let i = 0; i < shipLength; i++) {
-                    board[x][y + i] = activePlayer;
+                    board[x][y + i] = 1;
                 };
             } else if(activeOrientation === 3) {
                 for(let i = 0; i < shipLength; i++) {
-                    board[x - i][y] = activePlayer;
+                    board[x - i][y] = 1;
                 };
             }
         } else throw new Error('Cannot place ship here');  
@@ -80,16 +80,15 @@ const GameboardFactory = () => {
     };
 
     const hitTile = (x, y) => {
-        if(board[x][y] !== 3) {
+        // if tile contains a ship, change to 2, if nothing, 3
+        if(board[x][y] === 1) {
+            board[x][y] = 2;
+        } else if(board[x][y] === 0) {
             board[x][y] = 3;
         } else throw new Error('Tile is already hit');
-    }
-
-    const testFunction = () => {
-        return getBoard();
     };
 
-    return {testFunction, getBoard, changeShipPlacingOrientation, getShipPlacingOrientation};
+    return {checkIfPositionIsValid, getBoard, changeShipPlacingOrientation, getShipPlacingOrientation, placeShip, getTileValue, hitTile};
 };
 
 export {GameboardFactory}
