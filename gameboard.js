@@ -19,8 +19,6 @@ const GameboardFactory = () => {
         };
     })();
 
-    
-
     // Board Manipulation
 
     const getBoard = () => {

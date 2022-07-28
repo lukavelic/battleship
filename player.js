@@ -1,6 +1,10 @@
 const PlayerFactory = (playerName, id) => {
     let fleet = [];
 
+    const getId = (id) => {
+        return id;
+    }
+
     const addShipToFleet = (ship) => {
         fleet.push(ship);
     };
@@ -9,7 +13,7 @@ const PlayerFactory = (playerName, id) => {
         return fleet;
     };
 
-    return {playerName, id, addShipToFleet, getFleet};
+    return {playerName, getId, addShipToFleet, getFleet};
 }
 
 export {PlayerFactory};
