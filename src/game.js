@@ -70,23 +70,34 @@ const GameFactory = () => {
     // Game Start Setup
 
     const gameStartSetup = (coords) => {
+
         const x = coords.slice(0,1);
         const y = coords.slice(-1);
+        
+        let orientation;
+        let validity;
 
-        if(player1 && player2) {
-            const player = getActivePlayer();
-            const playerId = getActivePlayer().getId();
+        const fleetSize = getActivePlayer().getFleet().length;
+        let shipType = '';
+        let shipLength;
 
-            let orientation;
+        if(fleetSize === 0) {
+            shipLength = 2;
+        } else if(fleetSize === 1 || fleetSize === 2) {
+            shipLength = 3;
+        } else if(fleetSize === 3) {
+            shipLength = 4
+        } else shipLength = 5;
 
-            if(playerId === 1) {
-                orientation = gameboard1.getShipPlacingOrientation();
-            } else orientation = gameboard2.getShipPlacingOrientation();
+        if(getActivePlayer().getId() === 1) {
+            validity = gameboard1.checkIfPositionIsValid(x, y, shipLength);
+            orientation = gameboard1.getShipPlacingOrientation();
+        } else {
+            validity = gameboard2.checkIfPositionIsValid(x, y, shipLength);
+            orientation = gameboard2.getShipPlacingOrientation();
+        };
 
-            let fleetSize = player.getFleet().length;
-            console.log(fleetSize)
-            let shipType = '';
-
+        if(validity) {
             if(fleetSize === 0) {
                 shipType = 'destroyer';                
             } else if(fleetSize === 1) {
@@ -97,17 +108,26 @@ const GameFactory = () => {
                 shipType = 'battleship';
             } else if(fleetSize === 4) {
                 shipType = 'carrier';
-            } else changeGameState();
+            } else {
+                changeGameState();
+                renderDOM.removeRotateButton();
+            };
 
             createShip(shipType, x, y, orientation);
+
+            if(getActivePlayer().getId() === 1) {
+                renderDOM.renderBoard(1);
+            } else renderDOM.renderBoard(2);           
+
             changeActivePlayer();
-        };
+
+        } else throw new Error('Cannot place a ship here');
     };
 
     // GAMEPLAY
 
     const gameplay = (id) => {
-        console.log(id)
+        
         const x = id.slice(0,1);
         const y = id.slice(-1);
 
@@ -152,24 +172,16 @@ const GameFactory = () => {
     // Ship manipulation
 
     const createShip = (type, x, y, shipOrientation) => {
-        let length;
+        
+        const ship = ShipFactory(type, x, y, shipOrientation);
+        let length = ship.getLength();
 
-        if (activePlayer === 1) {
-            const tileValidity = gameboard1.checkIfPositionIsValid(x,y,length);
-            if(tileValidity) {
-                let ship = ShipFactory(type, x, y, shipOrientation);
-                length = ship.getLength();
-                player1.addShipToFleet(ship);
-                gameboard1.placeShip(tileValidity, x, y, length);
-            };            
+        getActivePlayer().addShipToFleet(ship);
+
+        if(getActivePlayer().getId() === 1) {
+            gameboard1.placeShip(x, y, length);
         } else {
-            const tileValidity = gameboard2.checkIfPositionIsValid(x,y,length);
-            if(tileValidity) {
-                let ship = ShipFactory(type, x, y, shipOrientation);
-                length = ship.getLength();
-                player2.addShipToFleet(ship);
-                gameboard2.placeShip(tileValidity, x, y, length);
-            };            
+            gameboard2.placeShip(x, y, length);
         };
     };
 

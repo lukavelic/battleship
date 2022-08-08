@@ -31,8 +31,9 @@ const RenderFactory = () => {
             <div class="board" id="board-2"></div>
             <div class="ui-container" id="ui-container">
                 <input type="button" id="rotate" value="Rotate Ship">
-                <div class="rotate-info" id="rotate-info"></div>
+                <div class="rotate-info" id="rotate-info">Placing ship in ${game.gameboard1.getShipPlacingOrientation()} direction</div>
             </div>
+            <div class="game-info" id="player-info"></div>
             <div class="game-info" id="game-info"></div>
         `;
 
@@ -56,8 +57,9 @@ const RenderFactory = () => {
             for(let j = 0; j < 10; j++) {
                 const tile = document.createElement('div');
                 tile.setAttribute('id', `${j}-${i}`);
-
-                if(board[j][i] === 2) {
+                if(board[j][i] === 1) {
+                    tile.setAttribute('class', `tile ship tile-board${id}`);
+                } else if(board[j][i] === 2) {
                     tile.setAttribute('class', `tile hit tile-board${id}`);
                 } else if(board[j][i] === 3) {
                     tile.setAttribute('class', `tile miss tile-board${id}`);
@@ -91,29 +93,31 @@ const RenderFactory = () => {
             } else throw new Error('You are hitting the wrong board');
         };
 
-        turnInfo();
+        turnInfo(tileId);
     };
 
-    const turnInfo = () => {
-        document.querySelector('#game-info').innerText = `Player ${game.getActivePlayerId()}'s turn`;
+    const turnInfo = (tileId) => {
+        document.querySelector('#player-info').innerText = `Player ${game.getActivePlayerId()}'s turn`;
+
+        const str = '';
+
+        // if()
+        document.querySelector('#game-info').innerText = ``
     };
 
     const rotateButton = () => {
-        const button = document.querySelector('#rotate');
-        const rotateInfo = document.querySelector('#rotate-info');
+        document.querySelector('#rotate').addEventListener('click', function(e) {
+            game.gameboard1.changeShipPlacingOrientation();
+            game.gameboard2.changeShipPlacingOrientation();
 
-        button.addEventListener('click', function(e) {
-            if(game.getActivePlayer() === 1) {
-                game.gameboard1.changeShipPlacingOrientation();
-
-                rotateInfo.innerText = `Placing ship in ${game.gameboard1.getShipPlacingOrientation()} direction`;                
-            } else {
-                game.gameboard2.changeShipPlacingOrientation();
-                
-                rotateInfo.innerText = `Placing ship in ${game.gameboard2.getShipPlacingOrientation()} direction`;    
-            };
+            document.querySelector('#rotate-info').innerText = `Placing ship in ${game.gameboard1.getShipPlacingOrientation()} direction`;
         });
     };
+
+    const removeRotateButton = () => {
+        document.querySelector('#rotate').remove();
+        document.querySelector('#rotate-info').remove();
+    }
 
     const updateTile = (value, x, y) => {
         const tile = document.querySelector(`#${x}-${y}`);
@@ -125,7 +129,17 @@ const RenderFactory = () => {
         };
     };
 
-    return {initializeSubmitButton, submitInput, renderUI, renderBoard, tileListeners, rotateButton, updateTile, clickTile};
+    return {
+        initializeSubmitButton,
+        submitInput,
+        renderUI, 
+        renderBoard, 
+        tileListeners,
+        rotateButton,
+        removeRotateButton,
+        updateTile, 
+        clickTile,
+    };
 };
 
 export {RenderFactory};

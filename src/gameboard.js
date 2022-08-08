@@ -64,51 +64,49 @@ const GameboardFactory = () => {
                     if(board[x-i][y] !== 0) validity = false;
                 };
             };
-            console.log(validity)
+            
             return validity;
         };
 
         if(activeOrientation === 0) { // North
-            if(y - shipLength < -1 && checkIfOccupied() !== true) validity = false;
+            if(y - shipLength < -1 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 1) { // East
-            if(x + shipLength > 10 && checkIfOccupied() !== true) validity = false;
+            if(x + shipLength > 10 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 2) { // South
-            if(y + shipLength > 10 && checkIfOccupied() !== true) validity = false;
+            if(y + shipLength > 10 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 3) { // West
-            if(x - shipLength < -1 && checkIfOccupied() !== true) validity = false;
+            if(x - shipLength < -1 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         };
 
         return validity;
     };
 
-    const placeShip = (isValid, xC, yC, length) => {
+    const placeShip = (xC, yC, length) => {
         const x = parseInt(xC);
         const y = parseInt(yC);
         const shipLength = parseInt(length);
 
-        if(isValid) {
-            if(activeOrientation === 0) {
-                for(let i = 0; i < shipLength; i++) {
-                    board[x][y - i] = 1;
-                };
-            } else if(activeOrientation === 1) {
-                for(let i = 0; i < shipLength; i++) {
-                    board[x + i][y] = 1;
-                };
-            } else if(activeOrientation === 2) {
-                for(let i = 0; i < shipLength; i++) {
-                    board[x][y + i] = 1;
-                };
-            } else if(activeOrientation === 3) {
-                for(let i = 0; i < shipLength; i++) {
-                    board[x - i][y] = 1;
-                };
-            }
-        } else throw new Error('Cannot place ship here');  
+        if(activeOrientation === 0) {
+            for(let i = 0; i < shipLength; i++) {
+                board[x][y - i] = 1;
+            };
+        } else if(activeOrientation === 1) {
+            for(let i = 0; i < shipLength; i++) {
+                board[x + i][y] = 1;
+            };
+        } else if(activeOrientation === 2) {
+            for(let i = 0; i < shipLength; i++) {
+                board[x][y + i] = 1;
+            };
+        } else if(activeOrientation === 3) {
+            for(let i = 0; i < shipLength; i++) {
+                board[x - i][y] = 1;
+            };
+        }; 
     };
 
     const getTileValue = (x, y) => {
@@ -124,7 +122,16 @@ const GameboardFactory = () => {
         } else throw new Error('Tile is already hit');
     };
 
-    return {checkIfPositionIsValid, getBoard, changeShipPlacingOrientation, getShipPlacingOrientation, resetShipPlacingOrientation, placeShip, getTileValue, hitTile};
+    return {
+        checkIfPositionIsValid, 
+        getBoard,
+        changeShipPlacingOrientation,
+        getShipPlacingOrientation, 
+        resetShipPlacingOrientation, 
+        placeShip,
+        getTileValue, 
+        hitTile,
+    };
 };
 
 export {GameboardFactory}
