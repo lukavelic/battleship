@@ -6,19 +6,21 @@ import { RenderFactory } from "./render.js";
 
 console.log('test');
 
+// INITIAL SETUP
+
 const renderDOM = RenderFactory();
 const game = GameFactory();
+renderDOM.initializeSubmitButton();
 
-renderDOM.renderUI();
-renderDOM.renderBoard(1);
+// renderDOM.renderUI();
+// renderDOM.renderBoard(1);
+// renderDOM.renderBoard(2);
 
-game.createPlayer('luka', 1);
-game.createShip('battleship', 5, 5, 1);
-console.log(game)
-game.checkTile(5,5);
-console.log(game.checkTile(5,5))
-
-
+// game.createPlayer('luka', 1);
+// game.createShip('battleship', 5, 5, 1);
+// console.log(game)
+// game.checkTile(5,5);
+// console.log(game.checkTile(5,5))
 
 export {game, renderDOM};
 

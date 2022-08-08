@@ -1,8 +1,9 @@
 const PlayerFactory = (playerName, id) => {
     let fleet = [];
+    let playerId = id;
 
-    const getId = (id) => {
-        return id;
+    const getId = () => {
+        return playerId;
     }
 
     const addShipToFleet = (ship) => {

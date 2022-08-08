@@ -1,3 +1,8 @@
+.container {
+    display: flex;
+    gap: 12px;
+}
+
 .board {
     display: flex;
     flex-wrap: wrap;
@@ -9,6 +14,18 @@
     .tile {
         height: 10%;
         width: 10%;
+        background-color: rgb(186, 186, 186);
+        outline: black 1px solid;
+    }
+    
+    .tile:hover {
+        cursor: pointer;
+    }
+
+    .miss {
+        background-color: yellow;
+    }
+
+    .hit {
         background-color: red;
-        outline: yellow 1px solid;
     }

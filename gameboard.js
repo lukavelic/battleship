@@ -26,7 +26,7 @@ const GameboardFactory = () => {
     }
 
     const changeShipPlacingOrientation = () => {
-        if(activeOrientation < 4) {
+        if(activeOrientation < 3) {
             activeOrientation += 1;
         } else {
             activeOrientation -= 3;
@@ -37,23 +37,59 @@ const GameboardFactory = () => {
         return activeOrientation;
     };
 
-    const checkIfPositionIsValid = (x, y, shipLength) => {
-        if(activeOrientation === 0) { // North
-            if(y - shipLength < -1) return false;
-            else return true;
-        } else if(activeOrientation === 1) { // East
-            if(x + shipLength > 10) return false;
-            else return true;
-        } else if(activeOrientation === 2) { // South
-            if(y + shipLength > 10) return false;
-            else return true;
-        } else if(activeOrientation === 3) { // West
-            if(x - shipLength < -1) return false;
-            else return true;
+    const resetShipPlacingOrientation = () => {
+        activeOrientation = 1;
+    }
+
+    const checkIfPositionIsValid = (xC, yC, length) => {
+        const x = parseInt(xC);
+        const y = parseInt(yC);
+        const shipLength = parseInt(length);
+
+        let validity;
+
+        const checkIfOccupied = () => {
+            const board = getBoard();
+
+            let validity = true;
+
+            for(let i = 0; i < shipLength; i++) {
+                if(activeOrientation === 0) { // North
+                    if(board[x][y-i] !== 0) validity = false;
+                } else if(activeOrientation === 1) { // East
+                    if(board[x+i][y] !== 0) validity = false;
+                } else if(activeOrientation === 2) { // South
+                    if(board[x][y+i] !== 0) validity = false;
+                } else if(activeOrientation === 3) { // West
+                    if(board[x-i][y] !== 0) validity = false;
+                };
+            };
+            console.log(validity)
+            return validity;
         };
+
+        if(activeOrientation === 0) { // North
+            if(y - shipLength < -1 && checkIfOccupied() !== true) validity = false;
+            else validity = true;
+        } else if(activeOrientation === 1) { // East
+            if(x + shipLength > 10 && checkIfOccupied() !== true) validity = false;
+            else validity = true;
+        } else if(activeOrientation === 2) { // South
+            if(y + shipLength > 10 && checkIfOccupied() !== true) validity = false;
+            else validity = true;
+        } else if(activeOrientation === 3) { // West
+            if(x - shipLength < -1 && checkIfOccupied() !== true) validity = false;
+            else validity = true;
+        };
+
+        return validity;
     };
 
-    const placeShip = (isValid, x, y, shipLength) => {
+    const placeShip = (isValid, xC, yC, length) => {
+        const x = parseInt(xC);
+        const y = parseInt(yC);
+        const shipLength = parseInt(length);
+
         if(isValid) {
             if(activeOrientation === 0) {
                 for(let i = 0; i < shipLength; i++) {
@@ -88,7 +124,7 @@ const GameboardFactory = () => {
         } else throw new Error('Tile is already hit');
     };
 
-    return {checkIfPositionIsValid, getBoard, changeShipPlacingOrientation, getShipPlacingOrientation, placeShip, getTileValue, hitTile};
+    return {checkIfPositionIsValid, getBoard, changeShipPlacingOrientation, getShipPlacingOrientation, resetShipPlacingOrientation, placeShip, getTileValue, hitTile};
 };
 
 export {GameboardFactory}
