@@ -47,19 +47,11 @@ const GameFactory = () => {
         } else {
             activePlayer = 1;
         };
-
-        
-        console.log(activePlayer)
     };
 
     const getActivePlayer = () => {
         if(activePlayer === 1) return player1;
         else return player2;
-    };
-
-    const getActivePlayerId = () => {
-        if(activePlayer === 1) return 1;
-        else return 2;
     };
 
     const getPlayer = (id) => {
@@ -69,17 +61,20 @@ const GameFactory = () => {
 
     // Game Start Setup
 
-    const gameStartSetup = (coords) => {
-
-        const x = coords.slice(0,1);
-        const y = coords.slice(-1);
-        
+    const gameStartSetup = (x, y) => {        
         let orientation;
         let validity;
-
-        const fleetSize = getActivePlayer().getFleet().length;
         let shipType = '';
         let shipLength;
+        const fleetSize = getActivePlayer().getFleet().length;
+
+        const executeTurn = () => {
+            createShip(shipType, x, y, orientation);
+
+            if(getActivePlayer().getId() === 1) {
+                renderDOM.renderBoard(1);
+            } else renderDOM.renderBoard(2);
+        };
 
         if(fleetSize === 0) {
             shipLength = 2;
@@ -99,65 +94,70 @@ const GameFactory = () => {
 
         if(validity) {
             if(fleetSize === 0) {
-                shipType = 'destroyer';                
+                shipType = 'destroyer';
+                executeTurn();
+                changeActivePlayer();            
             } else if(fleetSize === 1) {
                 shipType = 'submarine';
+                executeTurn();  
+                changeActivePlayer();  
             } else if(fleetSize === 2) {
                 shipType = 'cruiser';
+                executeTurn();  
+                changeActivePlayer();  
             } else if(fleetSize === 3) {
                 shipType = 'battleship';
+                executeTurn();  
+                changeActivePlayer();  
             } else if(fleetSize === 4) {
                 shipType = 'carrier';
-            } else {
-                changeGameState();
-                renderDOM.removeRotateButton();
+                executeTurn();
+
+                if(getActivePlayer().getId() === 2) {
+                    changeGameState();
+                    renderDOM.removeRotateButton();
+                } else changeActivePlayer();
             };
-
-            createShip(shipType, x, y, orientation);
-
-            if(getActivePlayer().getId() === 1) {
-                renderDOM.renderBoard(1);
-            } else renderDOM.renderBoard(2);           
-
-            changeActivePlayer();
-
         } else throw new Error('Cannot place a ship here');
     };
 
     // GAMEPLAY
 
-    const gameplay = (id) => {
-        
-        const x = id.slice(0,1);
-        const y = id.slice(-1);
+    const gameplay = (x, y) => {
 
-        if(getActivePlayerId() === 1) {
-            gameboard2.hitTile(x,y);
-            console.log('hit board 2');
+        // console.log(getActivePlayer().getFleet()[0].getPosition())
+
+        if(getActivePlayer().getId() === 1) {
+            gameboard2.hitTile(x, y);
+
+            if(gameboard2.getTileValue(x, y) === 2) {
+                console.log('hit ship');
+                player2.getShipWitCoords(x, y).getHit();
+            };
 
             // remove listener
             const boardNode = document.querySelector(`#board-2`);
-            boardNode.querySelector(`[id="${id}"]`).removeEventListener('click', renderDOM.clickTile);
+            boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
 
-            // renderDOM.renderBoard(1);
             renderDOM.renderBoard(2);
 
             changeActivePlayer();
         } else {
-            gameboard1.hitTile(x,y);
-            console.log('hit board 1');
+            gameboard1.hitTile(x, y);
+            
+            if(gameboard1.getTileValue(x, y) === 2) {
+                console.log('hit ship');
+                player1.getShipWitCoords(x, y).getHit();
+            };
 
             // remove listener
             const boardNode = document.querySelector(`#board-1`);
-            boardNode.querySelector(`[id="${id}"]`).removeEventListener('click', renderDOM.clickTile);
+            boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
 
             renderDOM.renderBoard(1);
-            // renderDOM.renderBoard(2);
 
             changeActivePlayer();
         };
-
-        console.log(gameboard1.getBoard(), gameboard2.getBoard())
     };
 
     const getGameState = () => {
@@ -199,18 +199,6 @@ const GameFactory = () => {
 
     // Check which ship is in position
 
-    const getShipWithCoordinates = (x, y) => {
-        if(activePlayer === 1) {
-            for(let i = 0; i < player2.getFleet().length; i++) {
-                const shipCoordArr = player2.getFleet()[i].getPosition();
-
-                console.log(shipCoordArr);
-                
-            }
-        } else {
-        }
-    };
-
     return {
         gameboard1, 
         gameboard2, 
@@ -219,15 +207,13 @@ const GameFactory = () => {
         getPlayerName, 
         createPlayer, 
         changeActivePlayer, 
-        getActivePlayer, 
-        getActivePlayerId,
+        getActivePlayer,
         gameStartSetup, 
         getGameState, 
         changeGameState, 
         gameplay, 
         createShip, 
-        checkTile, 
-        getShipWithCoordinates,
+        checkTile,
     };
 };
 

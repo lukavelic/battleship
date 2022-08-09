@@ -27,7 +27,7 @@ const ShipFactory = (type, x, y, orientation) => {
 
         let shipPosition = [[x,y]]
 
-        for(let i = 1; i <= length; i++) {
+        for(let i = 1; i < length; i++) {
 
             if(orientation === 0) {
                 let tempArr = [x,y-i];
@@ -61,15 +61,15 @@ const ShipFactory = (type, x, y, orientation) => {
         hitcount++;
         
         if(type === 'destroyer' && hitcount === 2) {
-            this.sinkShip();
+            sinkShip();
         } else if(type === 'submarine' && hitcount === 3) {
-            this.sinkShip();
+            sinkShip();
         } else if(type === 'cruiser' && hitcount === 3) {
-            this.sinkShip();
+            sinkShip();
         } else if(type === 'battleship' && hitcount === 4) {
-            this.sinkShip();
+            sinkShip();
         } else if(type === 'carrier' && hitcount === 5) {
-            this.sinkShip();
+            sinkShip();
         };
     };
 
@@ -77,7 +77,15 @@ const ShipFactory = (type, x, y, orientation) => {
         isTheShipActive = false;
     };
 
-    return {getType, getLength, getStatus, getPosition, getOrientation, getHit, sinkShip};
+    return {
+        getType, 
+        getLength,
+        getStatus, 
+        getPosition, 
+        getOrientation, 
+        getHit, 
+        sinkShip,
+    };
 };
 
 export {ShipFactory};

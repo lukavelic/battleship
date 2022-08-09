@@ -41,11 +41,7 @@ const GameboardFactory = () => {
         activeOrientation = 1;
     }
 
-    const checkIfPositionIsValid = (xC, yC, length) => {
-        const x = parseInt(xC);
-        const y = parseInt(yC);
-        const shipLength = parseInt(length);
-
+    const checkIfPositionIsValid = (x, y, length) => {
         let validity;
 
         const checkIfOccupied = () => {
@@ -53,7 +49,7 @@ const GameboardFactory = () => {
 
             let validity = true;
 
-            for(let i = 0; i < shipLength; i++) {
+            for(let i = 0; i < length; i++) {
                 if(activeOrientation === 0) { // North
                     if(board[x][y-i] !== 0) validity = false;
                 } else if(activeOrientation === 1) { // East
@@ -69,41 +65,38 @@ const GameboardFactory = () => {
         };
 
         if(activeOrientation === 0) { // North
-            if(y - shipLength < -1 || checkIfOccupied() !== true) validity = false;
+            if(y - length < -1 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 1) { // East
-            if(x + shipLength > 10 || checkIfOccupied() !== true) validity = false;
+            if(x + length > 10 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 2) { // South
-            if(y + shipLength > 10 || checkIfOccupied() !== true) validity = false;
+            if(y + length > 10 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         } else if(activeOrientation === 3) { // West
-            if(x - shipLength < -1 || checkIfOccupied() !== true) validity = false;
+            if(x - length < -1 || checkIfOccupied() !== true) validity = false;
             else validity = true;
         };
 
         return validity;
     };
 
-    const placeShip = (xC, yC, length) => {
-        const x = parseInt(xC);
-        const y = parseInt(yC);
-        const shipLength = parseInt(length);
+    const placeShip = (x, y, length) => {
 
         if(activeOrientation === 0) {
-            for(let i = 0; i < shipLength; i++) {
+            for(let i = 0; i < length; i++) {
                 board[x][y - i] = 1;
             };
         } else if(activeOrientation === 1) {
-            for(let i = 0; i < shipLength; i++) {
+            for(let i = 0; i < length; i++) {
                 board[x + i][y] = 1;
             };
         } else if(activeOrientation === 2) {
-            for(let i = 0; i < shipLength; i++) {
+            for(let i = 0; i < length; i++) {
                 board[x][y + i] = 1;
             };
         } else if(activeOrientation === 3) {
-            for(let i = 0; i < shipLength; i++) {
+            for(let i = 0; i < length; i++) {
                 board[x - i][y] = 1;
             };
         }; 
@@ -117,6 +110,7 @@ const GameboardFactory = () => {
         // if tile contains a ship, change to 2, if nothing, 3
         if(board[x][y] === 1) {
             board[x][y] = 2;
+            game.getPlayer()
         } else if(board[x][y] === 0) {
             board[x][y] = 3;
         } else throw new Error('Tile is already hit');

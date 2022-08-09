@@ -53,17 +53,19 @@ const RenderFactory = () => {
             board = game.gameboard1.getBoard();
         } else board = game.gameboard2.getBoard();
 
-        for(let i = 0; i < 10; i++) {
-            for(let j = 0; j < 10; j++) {
+        for(let y = 0; y < 10; y++) {
+            for(let x = 0; x < 10; x++) {
                 const tile = document.createElement('div');
-                tile.setAttribute('id', `${j}-${i}`);
-                if(board[j][i] === 1) {
-                    tile.setAttribute('class', `tile ship tile-board${id}`);
-                } else if(board[j][i] === 2) {
-                    tile.setAttribute('class', `tile hit tile-board${id}`);
-                } else if(board[j][i] === 3) {
-                    tile.setAttribute('class', `tile miss tile-board${id}`);
-                } else tile.setAttribute('class', `tile fog tile-board${id}`);
+                tile.setAttribute('data-x', `${x}`);
+                tile.setAttribute('data-y', `${y}`);
+                tile.setAttribute('id', `tile-board-${id}`)
+                if(board[x][y] === 1) {
+                    tile.setAttribute('class', `tile ship`);
+                } else if(board[x][y] === 2) {
+                    tile.setAttribute('class', `tile hit`);
+                } else if(board[x][y] === 3) {
+                    tile.setAttribute('class', `tile miss`);
+                } else tile.setAttribute('class', `tile fog`);
     
                 boardDiv.appendChild(tile);
             };
@@ -73,7 +75,7 @@ const RenderFactory = () => {
     };
 
     const tileListeners = (id) => {
-        const tiles = document.querySelectorAll(`.tile-board${id}`);
+        const tiles = document.querySelectorAll(`#tile-board-${id}`);
 
         tiles.forEach((element) => {
             element.addEventListener('click', clickTile);
@@ -81,28 +83,25 @@ const RenderFactory = () => {
     };
 
     const clickTile = (e) => {
-        console.log(e.target)
-        const boardId = parseInt(e.target.getAttribute('class').slice(-1));
-        const tileId = e.target.id;
+        const boardId = parseInt(e.target.getAttribute('id').slice(-1));
+        const xCoordinate = parseInt(e.target.dataset.x);
+        const yCoordinate = parseInt(e.target.dataset.y);
 
-        if(game.getGameState() === 'setup' && game.getActivePlayerId() === boardId) {
-            game.gameStartSetup(tileId);
+        if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
+            game.gameStartSetup(xCoordinate, yCoordinate);
         } else if(game.getGameState() === 'playing') {
-            if(game.getActivePlayerId() !== boardId) {
-                game.gameplay(tileId);
+            if(game.getActivePlayer().getId() !== boardId) {
+                game.gameplay(xCoordinate, yCoordinate);
             } else throw new Error('You are hitting the wrong board');
         };
 
-        turnInfo(tileId);
+        turnInfo(xCoordinate, yCoordinate);
     };
 
-    const turnInfo = (tileId) => {
-        document.querySelector('#player-info').innerText = `Player ${game.getActivePlayerId()}'s turn`;
+    const turnInfo = (x, y) => {
+        document.querySelector('#player-info').innerText = `Player ${game.getActivePlayer().getId()}'s turn`;
 
         const str = '';
-
-        // if()
-        document.querySelector('#game-info').innerText = ``
     };
 
     const rotateButton = () => {
@@ -120,13 +119,13 @@ const RenderFactory = () => {
     }
 
     const updateTile = (value, x, y) => {
-        const tile = document.querySelector(`#${x}-${y}`);
+        const tile = document.querySelector(`[data-x='${x}'][data-y='${y}']`);
 
-        if(value === 1 || value === 2) {
-            tile.setAttribute('class', 'hit');
-        } else {
-            tile.setAttribute('class', 'miss');
-        };
+        // if(value === 1 || value === 2) {
+        //     tile.setAttribute('class', 'hit');
+        // } else {
+        //     tile.setAttribute('class', 'miss');
+        // };
     };
 
     return {
