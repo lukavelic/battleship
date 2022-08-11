@@ -84,18 +84,18 @@ const RenderFactory = () => {
 
     const clickTile = (e) => {
         const boardId = parseInt(e.target.getAttribute('id').slice(-1));
-        const xCoordinate = parseInt(e.target.dataset.x);
-        const yCoordinate = parseInt(e.target.dataset.y);
+        const x = parseInt(e.target.dataset.x);
+        const y = parseInt(e.target.dataset.y);
 
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
-            game.gameStartSetup(xCoordinate, yCoordinate);
+            game.gameStartSetup(x, y);
         } else if(game.getGameState() === 'playing') {
             if(game.getActivePlayer().getId() !== boardId) {
-                game.gameplay(xCoordinate, yCoordinate);
+                game.gameplay(x, y);
             } else throw new Error('You are hitting the wrong board');
         };
 
-        turnInfo(xCoordinate, yCoordinate);
+        turnInfo(x, y);
     };
 
     const turnInfo = (x, y) => {
