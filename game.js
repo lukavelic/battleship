@@ -130,54 +130,24 @@ const GameFactory = () => {
 
     const gameplay = (x, y) => {
         
-        // getInactivePlayersGameboard().hitTile(x, y);
+        getInactivePlayersGameboard().hitTile(x, y);
 
-        // if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
-        //     console.log('hit ship');
+        if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
+            console.log('hit ship');
 
-        //     getInactivePlayer().getShipWitCoords(x, y).getHit();
-        // };
-
-
-
-        // Old
-
-
-        if(getActivePlayer().getId() === 1) {
-            gameboard2.hitTile(x, y);
-
-            if(gameboard2.getTileValue(x, y) === 2) {
-                console.log('hit ship');
-                player2.getShipWitCoords(x, y).getHit();
-            };
-
-            // remove listener
-            const boardNode = document.querySelector(`#board-2`);
-            boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
-
-            renderDOM.renderBoard(2);
-
-            changeActivePlayer();
-        } else {
-            gameboard1.hitTile(x, y);
-            
-            if(gameboard1.getTileValue(x, y) === 2) {
-                console.log('hit ship');
-                player1.getShipWitCoords(x, y).getHit();
-            };
-
-            // remove listener
-            const boardNode = document.querySelector(`#board-1`);
-            boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
-
-            renderDOM.renderBoard(1);
-
-            changeActivePlayer();
+            getInactivePlayer().getShipWitCoords(x, y).getHit();
         };
+        
+        const boardNode = document.querySelector(`#board-${getInactivePlayersGameboard().getBoardId()}`);
+        boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
+
+        renderDOM.renderBoard(getInactivePlayersGameboard().getBoardId());
+
+        changeActivePlayer();
 
         if(checkForGameEnd()) {
             gameEnd();
-        }
+        };
     };
 
     const getGameState = () => {
