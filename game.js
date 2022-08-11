@@ -137,7 +137,7 @@ const GameFactory = () => {
         if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
             console.log('hit ship');
 
-            getInactivePlayer().getShipWitCoords(x, y).getHit();
+            getInactivePlayer().getShipWithCoords(x, y).getHit();
         };
         
         const boardNode = document.querySelector(`#board-${getInactivePlayersGameboard().getBoardId()}`);

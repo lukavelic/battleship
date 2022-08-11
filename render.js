@@ -106,7 +106,11 @@ const RenderFactory = () => {
     const turnInfo = (x, y) => {
         document.querySelector('#player-info').innerText = `Player ${game.getActivePlayer().getId()}'s turn`;
 
-        const str = '';
+        const gameInfo = document.querySelector('#game-info');
+
+        if(!game.getActivePlayer().getShipWithCoords(x, y).getStatus()) {
+            gameInfo.innerText = `You sunk their ${game.getActivePlayer().getShipWithCoords(x, y).getType()}`;
+        };
     };
 
     const errorInfo = (msg) => {
@@ -124,7 +128,7 @@ const RenderFactory = () => {
             (function() {
                 modal.style.display = 'none';
             })();
-        }, 200);
+        }, 200); // Increase timeout for final builds
     }
 
     const gameEndScreen = () => {

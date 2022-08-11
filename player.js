@@ -14,7 +14,7 @@ const PlayerFactory = (playerName, id) => {
         return fleet;
     };
 
-    const getShipWitCoords = (x, y) => {
+    const getShipWithCoords = (x, y) => {
         const fleet = getFleet();
         let ship;
 
@@ -37,7 +37,7 @@ const PlayerFactory = (playerName, id) => {
         getId, 
         addShipToFleet, 
         getFleet,
-        getShipWitCoords,
+        getShipWithCoords,
     };
 }
 
