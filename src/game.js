@@ -175,7 +175,6 @@ const GameFactory = () => {
 
     const checkForGameEnd = () => {
         const fleet = getActivePlayer().getFleet();
-        console.log(fleet[0].getStatus())
 
         const checkIfSunk = (element) => {
             return element.getStatus() === false;
