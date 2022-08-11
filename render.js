@@ -35,6 +35,7 @@ const RenderFactory = () => {
             </div>
             <div class="game-info" id="player-info"></div>
             <div class="game-info" id="game-info"></div>
+            <div class="game-info" id="error-info"></div>
         `;
 
         renderBoard(1);
@@ -89,11 +90,15 @@ const RenderFactory = () => {
 
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
             game.gameStartSetup(x, y);
+            errorInfo();
         } else if(game.getGameState() === 'playing') {
             if(game.getActivePlayer().getId() !== boardId) {
                 game.gameplay(x, y);
-            } else throw new Error('You are hitting the wrong board');
-        };
+                errorInfo();
+            } else {
+                errorInfo('You are hitting the wrong board!');
+            };
+        } else errorInfo('You are placing ships on the wrong board')
 
         turnInfo(x, y);
     };
@@ -103,6 +108,12 @@ const RenderFactory = () => {
 
         const str = '';
     };
+
+    const errorInfo = (msg) => {
+        if(msg) {
+            document.querySelector('#error-info').innerText = `${msg}`;
+        } else document.querySelector('#error-info').innerText = '';
+    }
 
     const gameEndScreen = () => {
         if(game.getActivePlayer().getId() === 1) {
