@@ -123,6 +123,8 @@ const GameFactory = () => {
                     renderDOM.removeRotateButton();
                 } else changeActivePlayer();
             };
+            
+            renderDOM.renderBlurBetweenTurns();
         } else throw new Error('Cannot place a ship here');
     };
 
@@ -144,6 +146,7 @@ const GameFactory = () => {
         renderDOM.renderBoard(getInactivePlayersGameboard().getBoardId());
 
         changeActivePlayer();
+        renderDOM.renderBlurBetweenTurns();
 
         if(checkForGameEnd()) {
             gameEnd();

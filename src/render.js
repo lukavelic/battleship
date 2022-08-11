@@ -101,7 +101,6 @@ const RenderFactory = () => {
         } else errorInfo('You are placing ships on the wrong board')
 
         turnInfo(x, y);
-        renderBlurBetweenTurns();
     };
 
     const turnInfo = (x, y) => {
@@ -125,7 +124,7 @@ const RenderFactory = () => {
             (function() {
                 modal.style.display = 'none';
             })();
-        }, 3000);
+        }, 200);
     }
 
     const gameEndScreen = () => {
@@ -165,6 +164,7 @@ const RenderFactory = () => {
         renderBoard, 
         tileListeners,
         rotateButton,
+        renderBlurBetweenTurns,
         gameEndScreen,
         removeRotateButton,
         updateTile, 
