@@ -207,6 +207,16 @@ const GameFactory = () => {
 
     // Board manipulation
 
+    const getActivePlayersGameboard = () => {
+        if(getActivePlayer().getId() === 1) return gameboard1;
+        else return gameboard2;
+    };
+
+    const getInactivePlayersGameboard = () => {
+        if(getActivePlayer().getId() === 1) return gameboard2;
+        else return gameboard1;
+    };
+
     const checkTile = (x, y) => {
         if(activePlayer === 1) {
             const tileValue = gameboard2.getBoard()[x][y];
@@ -235,6 +245,8 @@ const GameFactory = () => {
         checkForGameEnd,
         createShip, 
         checkTile,
+        getActivePlayersGameboard,
+        getInactivePlayersGameboard,
     };
 };
 

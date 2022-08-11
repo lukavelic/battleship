@@ -110,7 +110,6 @@ const GameboardFactory = () => {
         // if tile contains a ship, change to 2, if nothing, 3
         if(board[x][y] === 1) {
             board[x][y] = 2;
-            game.getPlayer()
         } else if(board[x][y] === 0) {
             board[x][y] = 3;
         } else throw new Error('Tile is already hit');
