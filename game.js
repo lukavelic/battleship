@@ -54,6 +54,11 @@ const GameFactory = () => {
         else return player2;
     };
 
+    const getInactivePlayer = () => {
+        if(activePlayer === 1) return player2;
+        else return player1;
+    };
+
     const getPlayer = (id) => {
         if(id === 1) return player1;
         else return player2;
@@ -124,8 +129,20 @@ const GameFactory = () => {
     // GAMEPLAY
 
     const gameplay = (x, y) => {
+        
+        // getInactivePlayersGameboard().hitTile(x, y);
 
-        // console.log(getActivePlayer().getFleet()[0].getPosition())
+        // if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
+        //     console.log('hit ship');
+
+
+        //     player2.getShipWitCoords(x, y).getHit();
+        // };
+
+
+
+        // Old
+
 
         if(getActivePlayer().getId() === 1) {
             gameboard2.hitTile(x, y);
