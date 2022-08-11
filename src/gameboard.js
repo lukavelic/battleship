@@ -1,10 +1,9 @@
 import { ShipFactory } from "./ship.js";
 import { game } from "./index.js";
 
-const GameboardFactory = () => {
+const GameboardFactory = (id) => {
 
-    let board = [];
-    
+    let board = [];   
     let activeOrientation = 1;
 
     // Create board
@@ -23,7 +22,11 @@ const GameboardFactory = () => {
 
     const getBoard = () => {
         return board;
-    }
+    };
+
+    const getBoardId = () => {
+        return id;
+    };
 
     const changeShipPlacingOrientation = () => {
         if(activeOrientation < 3) {
@@ -118,6 +121,7 @@ const GameboardFactory = () => {
     return {
         checkIfPositionIsValid, 
         getBoard,
+        getBoardId,
         changeShipPlacingOrientation,
         getShipPlacingOrientation, 
         resetShipPlacingOrientation, 
