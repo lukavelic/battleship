@@ -139,19 +139,29 @@ const GameFactory = () => {
 
             getInactivePlayer().getShipWithCoords(x, y).getHit();
         };
+
+        // Removes listener from hit tile and rerenders board
         
         const boardNode = document.querySelector(`#board-${getInactivePlayersGameboard().getBoardId()}`);
         boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
 
         renderDOM.renderBoard(getInactivePlayersGameboard().getBoardId());
 
-        changeActivePlayer();
-        renderDOM.renderBlurBetweenTurns();
-
         if(checkForGameEnd()) {
             gameEnd();
-        };
+        } else changeTurn();
     };
+
+    const changeTurn = () => {
+        document.querySelector('body').style.pointerEvents = 'none';
+
+        setTimeout(() => {    
+            renderDOM.turnInfo();        
+            changeActivePlayer();
+            renderDOM.renderBlurBetweenTurns();
+            document.querySelector('body').style.pointerEvents = '';
+        }, 2000);
+    }
 
     const getGameState = () => {
         return gameState;
@@ -163,7 +173,7 @@ const GameFactory = () => {
     };
 
     const checkForGameEnd = () => {
-        const fleet = getActivePlayer().getFleet();
+        const fleet = getInactivePlayer().getFleet();
 
         const checkIfSunk = (element) => {
             return element.getStatus() === false;
@@ -232,6 +242,7 @@ const GameFactory = () => {
         getGameState, 
         changeGameState, 
         gameplay,
+        changeTurn,
         checkForGameEnd,
         createShip, 
         checkTile,

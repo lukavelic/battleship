@@ -108,9 +108,9 @@ const RenderFactory = () => {
 
         const gameInfo = document.querySelector('#game-info');
 
-        if(!game.getActivePlayer().getShipWithCoords(x, y).getStatus()) {
-            gameInfo.innerText = `You sunk their ${game.getActivePlayer().getShipWithCoords(x, y).getType()}`;
-        };
+        if(x && y && !game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
+            gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
+        } else gameInfo.innerText = '';
     };
 
     const errorInfo = (msg) => {
@@ -167,6 +167,7 @@ const RenderFactory = () => {
         renderUI, 
         renderBoard, 
         tileListeners,
+        turnInfo,
         rotateButton,
         renderBlurBetweenTurns,
         gameEndScreen,
