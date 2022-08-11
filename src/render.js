@@ -101,6 +101,7 @@ const RenderFactory = () => {
         } else errorInfo('You are placing ships on the wrong board')
 
         turnInfo(x, y);
+        renderBlurBetweenTurns();
     };
 
     const turnInfo = (x, y) => {
@@ -113,6 +114,18 @@ const RenderFactory = () => {
         if(msg) {
             document.querySelector('#error-info').innerText = `${msg}`;
         } else document.querySelector('#error-info').innerText = '';
+    };
+
+    const renderBlurBetweenTurns = () => {
+        const modal = document.querySelector('.modal');
+
+        modal.style.display = 'block';
+
+        setTimeout(() => {
+            (function() {
+                modal.style.display = 'none';
+            })();
+        }, 3000);
     }
 
     const gameEndScreen = () => {
