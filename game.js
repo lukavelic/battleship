@@ -4,8 +4,8 @@ import { ShipFactory } from "./ship.js";
 import { renderDOM } from "./index.js";
 
 const GameFactory = () => {
-    let gameboard1 = GameboardFactory();
-    let gameboard2 = GameboardFactory();
+    let gameboard1 = GameboardFactory(1);
+    let gameboard2 = GameboardFactory(2);
 
     let player1;
     let player2;
@@ -135,8 +135,7 @@ const GameFactory = () => {
         // if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
         //     console.log('hit ship');
 
-
-        //     player2.getShipWitCoords(x, y).getHit();
+        //     getInactivePlayer().getShipWitCoords(x, y).getHit();
         // };
 
 
@@ -255,6 +254,7 @@ const GameFactory = () => {
         createPlayer, 
         changeActivePlayer, 
         getActivePlayer,
+        getInactivePlayer,
         gameStartSetup, 
         getGameState, 
         changeGameState, 
