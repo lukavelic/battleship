@@ -104,6 +104,10 @@ const RenderFactory = () => {
         const str = '';
     };
 
+    const gameEndScreen = () => {
+        document.querySelector('.container').innerHTML = `Player ${game.getActivePlayer().getId()} is the winner`
+    }
+
     const rotateButton = () => {
         document.querySelector('#rotate').addEventListener('click', function(e) {
             game.gameboard1.changeShipPlacingOrientation();
@@ -135,6 +139,7 @@ const RenderFactory = () => {
         renderBoard, 
         tileListeners,
         rotateButton,
+        gameEndScreen,
         removeRotateButton,
         updateTile, 
         clickTile,

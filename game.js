@@ -158,6 +158,10 @@ const GameFactory = () => {
 
             changeActivePlayer();
         };
+
+        if(checkForGameEnd()) {
+            gameEnd();
+        }
     };
 
     const getGameState = () => {
@@ -168,6 +172,23 @@ const GameFactory = () => {
         if(gameState === 'setup') gameState = 'playing';
         else gameState = 'setup';
     };
+
+    const checkForGameEnd = () => {
+        const fleet = getActivePlayer().getFleet();
+        console.log(fleet[0].getStatus())
+
+        const checkIfSunk = (element) => {
+            return element.getStatus() === false;
+        }
+        
+        const fleetSunk = fleet.every(checkIfSunk);
+
+        return fleetSunk;
+    };
+
+    const gameEnd = () => {
+        renderDOM.gameEndScreen();
+    }
 
     // Ship manipulation
 
@@ -211,7 +232,8 @@ const GameFactory = () => {
         gameStartSetup, 
         getGameState, 
         changeGameState, 
-        gameplay, 
+        gameplay,
+        checkForGameEnd,
         createShip, 
         checkTile,
     };
