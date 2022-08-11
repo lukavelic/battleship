@@ -105,8 +105,10 @@ const RenderFactory = () => {
     };
 
     const gameEndScreen = () => {
-        document.querySelector('.container').innerHTML = `Player ${game.getActivePlayer().getId()} is the winner`
-    }
+        if(game.getActivePlayer().getId() === 1) {
+            document.querySelector('.container').innerHTML = `Player 2 is the winner`;
+        } else document.querySelector('.container').innerHTML = `Player 1 is the winner`;
+    };
 
     const rotateButton = () => {
         document.querySelector('#rotate').addEventListener('click', function(e) {
