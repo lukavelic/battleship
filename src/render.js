@@ -25,17 +25,21 @@ const RenderFactory = () => {
 
     const renderUI = () => {
         const pageContainer = document.querySelector('#container');
+        const ui = document.querySelector('.ui');
 
         pageContainer.innerHTML = `
             <div class="board" id="board-1"></div>
             <div class="board" id="board-2"></div>
-            <div class="ui-container" id="ui-container">
-                <input type="button" id="rotate" value="Rotate Ship">
-                <div class="rotate-info" id="rotate-info">Placing ship in ${game.gameboard1.getShipPlacingOrientation()} direction</div>
-            </div>
+        `;
+
+        ui.innerHTML = `
             <div class="game-info" id="player-info"></div>
             <div class="game-info" id="game-info"></div>
             <div class="game-info" id="error-info"></div>
+            <div class="rotation-container" id="rotation-container">
+                <input type="button" id="rotate" value="Rotate Ship">
+                <div class="rotate-info" id="rotate-info">Placing ship in westerly direction</div>
+            </div>
         `;
 
         renderGameboards();
@@ -108,7 +112,7 @@ const RenderFactory = () => {
     };
 
     const turnInfo = (x, y) => {
-        document.querySelector('#player-info').innerText = `Player ${game.getActivePlayer().getId()}'s turn`;
+        document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn`;
 
         const gameInfo = document.querySelector('#game-info');
 
@@ -139,9 +143,11 @@ const RenderFactory = () => {
     }
 
     const gameEndScreen = () => {
-        if(game.getInactivePlayer().getId() === 1) {
-            document.querySelector('.container').innerHTML = `Player 2 is the winner`;
-        } else document.querySelector('.container').innerHTML = `Player 1 is the winner`;
+        document.querySelector('.container').innerHTML = `${game.getActivePlayer().getName()} is the winner`;
+
+        // if(game.getInactivePlayer().getId() === 1) {
+        //     document.querySelector('.container').innerHTML = `${game.getInactivePlayer().getName()} is the winner`;
+        // } else document.querySelector('.container').innerHTML = `${game.getInactivePlayer().getName()} is the winner`;
     };
 
     const rotateButton = () => {
@@ -149,7 +155,15 @@ const RenderFactory = () => {
             game.gameboard1.changeShipPlacingOrientation();
             game.gameboard2.changeShipPlacingOrientation();
 
-            document.querySelector('#rotate-info').innerText = `Placing ship in ${game.gameboard1.getShipPlacingOrientation()} direction`;
+            const numberedDirection = game.gameboard1.getShipPlacingOrientation()
+            let direction = ''
+
+            if(numberedDirection === 0) direction = 'northerly';
+            else if(numberedDirection === 1) direction = 'easterly';
+            else if(numberedDirection === 2) direction = 'southerly';
+            else direction = 'westerly'
+
+            document.querySelector('#rotate-info').innerText = `Placing ship in ${direction} direction`;
         });
     };
 
