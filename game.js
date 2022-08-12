@@ -138,6 +138,7 @@ const GameFactory = () => {
 
         if(checkForGameEnd()) {
             gameEnd();
+            return
         } else changeTurn();
 
         renderDOM.renderGameboards();
