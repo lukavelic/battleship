@@ -139,7 +139,7 @@ const RenderFactory = () => {
     }
 
     const gameEndScreen = () => {
-        if(game.getActivePlayer().getId() === 1) {
+        if(game.getInactivePlayer().getId() === 1) {
             document.querySelector('.container').innerHTML = `Player 2 is the winner`;
         } else document.querySelector('.container').innerHTML = `Player 1 is the winner`;
     };
