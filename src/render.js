@@ -38,41 +38,45 @@ const RenderFactory = () => {
             <div class="game-info" id="error-info"></div>
         `;
 
-        renderBoard(1);
-        renderBoard(2);
-
+        renderGameboards();
         rotateButton();
     };
 
-    const renderBoard = (id) => {
-        const boardDiv = document.querySelector(`#board-${id}`);
-        boardDiv.innerHTML = '';
+    const renderGameboards = () => {
+        const board1 = game.getActivePlayersGameboard();
+        const board2 = game.getInactivePlayersGameboard();
 
-        let board;
+        const boardDiv1 = document.querySelector(`#board-${board1.getBoardId()}`);
+        boardDiv1.innerHTML = '';
+        const boardDiv2 = document.querySelector(`#board-${board2.getBoardId()}`);
+        boardDiv2.innerHTML = '';
 
-        if(id === 1) {
-            board = game.gameboard1.getBoard();
-        } else board = game.gameboard2.getBoard();
-
-        for(let y = 0; y < 10; y++) {
-            for(let x = 0; x < 10; x++) {
-                const tile = document.createElement('div');
-                tile.setAttribute('data-x', `${x}`);
-                tile.setAttribute('data-y', `${y}`);
-                tile.setAttribute('id', `tile-board-${id}`)
-                if(board[x][y] === 1) {
-                    tile.setAttribute('class', `tile ship`);
-                } else if(board[x][y] === 2) {
-                    tile.setAttribute('class', `tile hit`);
-                } else if(board[x][y] === 3) {
-                    tile.setAttribute('class', `tile miss`);
-                } else tile.setAttribute('class', `tile fog`);
+        const renderBoard = (board, boardDiv) => {
+            for(let y = 0; y < 10; y++) {
+                for(let x = 0; x < 10; x++) {
+                    const tile = document.createElement('div');
+                    tile.setAttribute('data-x', `${x}`);
+                    tile.setAttribute('data-y', `${y}`);
+                    tile.setAttribute('id', `tile-board-${board.getBoardId()}`)
     
-                boardDiv.appendChild(tile);
+                    if(board.getBoard()[x][y] === 1 && board.getBoardId() === game.getActivePlayer().getId()) {
+                        tile.setAttribute('class', `tile ship`);
+                    } else if(board.getBoard()[x][y] === 2) {
+                        tile.setAttribute('class', `tile hit`);
+                    } else if(board.getBoard()[x][y] === 3) {
+                        tile.setAttribute('class', `tile miss`);
+                    } else tile.setAttribute('class', `tile fog`);
+        
+                    boardDiv.appendChild(tile);
+                };
             };
         };
 
-        tileListeners(id);
+        renderBoard(board1, boardDiv1);
+        renderBoard(board2, boardDiv2);
+
+        tileListeners(1);
+        tileListeners(2);
     };
 
     const tileListeners = (id) => {
@@ -108,8 +112,11 @@ const RenderFactory = () => {
 
         const gameInfo = document.querySelector('#game-info');
 
-        if(x && y && !game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
-            gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
+        if(x && y && game.getGameState === 'playing') {
+            console.log('test');
+            if(!game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
+                gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
+            };
         } else gameInfo.innerText = '';
     };
 
@@ -165,7 +172,7 @@ const RenderFactory = () => {
         initializeSubmitButton,
         submitInput,
         renderUI, 
-        renderBoard, 
+        renderGameboards, 
         tileListeners,
         turnInfo,
         rotateButton,
