@@ -1,7 +1,7 @@
 import { GameboardFactory } from "./gameboard.js";
 import { PlayerFactory } from "./player.js";
 import { ShipFactory } from "./ship.js";
-import { renderDOM } from "./index.js";
+import { game, renderDOM } from "./index.js";
 
 const GameFactory = () => {
     let gameboard1 = GameboardFactory(1);
@@ -67,19 +67,10 @@ const GameFactory = () => {
     // Game Start Setup
 
     const gameStartSetup = (x, y) => {        
-        let orientation;
-        let validity;
+        const orientation = getActivePlayersGameboard().getShipPlacingOrientation();
+        const fleetSize = getActivePlayer().getFleet().length;
         let shipType = '';
         let shipLength;
-        const fleetSize = getActivePlayer().getFleet().length;
-
-        const executeTurn = () => {
-            createShip(shipType, x, y, orientation);
-
-            if(getActivePlayer().getId() === 1) {
-                renderDOM.renderBoard(1);
-            } else renderDOM.renderBoard(2);
-        };
 
         if(fleetSize === 0) {
             shipLength = 2;
@@ -89,42 +80,42 @@ const GameFactory = () => {
             shipLength = 4
         } else shipLength = 5;
 
-        if(getActivePlayer().getId() === 1) {
-            validity = gameboard1.checkIfPositionIsValid(x, y, shipLength);
-            orientation = gameboard1.getShipPlacingOrientation();
-        } else {
-            validity = gameboard2.checkIfPositionIsValid(x, y, shipLength);
-            orientation = gameboard2.getShipPlacingOrientation();
+        const validity = getActivePlayersGameboard().checkIfPositionIsValid(x, y, shipLength);
+
+        const executeTurn = () => {
+            console.log('execute turn player id' + game.getActivePlayer().getId())
+            createShip(shipType, x, y, orientation);
+            renderDOM.renderGameboards();
+            
+            if(fleetSize === 4) {
+                if(getActivePlayer().getId() === 2) {
+                    changeGameState();
+                    renderDOM.removeRotateButton();
+                    return;
+                } else {
+                    changeTurn();
+                    return;
+                };
+            };
+
+            changeTurn();
         };
 
         if(validity) {
             if(fleetSize === 0) {
-                shipType = 'destroyer';
-                executeTurn();
-                changeActivePlayer();            
+                shipType = 'destroyer';          
             } else if(fleetSize === 1) {
-                shipType = 'submarine';
-                executeTurn();  
-                changeActivePlayer();  
+                shipType = 'submarine'; 
             } else if(fleetSize === 2) {
                 shipType = 'cruiser';
-                executeTurn();  
-                changeActivePlayer();  
             } else if(fleetSize === 3) {
                 shipType = 'battleship';
-                executeTurn();  
-                changeActivePlayer();  
             } else if(fleetSize === 4) {
                 shipType = 'carrier';
-                executeTurn();
-
-                if(getActivePlayer().getId() === 2) {
-                    changeGameState();
-                    renderDOM.removeRotateButton();
-                } else changeActivePlayer();
             };
+
+            executeTurn();
             
-            renderDOM.renderBlurBetweenTurns();
         } else throw new Error('Cannot place a ship here');
     };
 
@@ -145,14 +136,15 @@ const GameFactory = () => {
         const boardNode = document.querySelector(`#board-${getInactivePlayersGameboard().getBoardId()}`);
         boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
 
-        renderDOM.renderBoard(getInactivePlayersGameboard().getBoardId());
-
         if(checkForGameEnd()) {
             gameEnd();
         } else changeTurn();
+
+        renderDOM.renderGameboards();
     };
 
     const changeTurn = () => {
+        console.log('change turn fired')
         document.querySelector('body').style.pointerEvents = 'none';
 
         setTimeout(() => {    
@@ -160,7 +152,8 @@ const GameFactory = () => {
             changeActivePlayer();
             renderDOM.renderBlurBetweenTurns();
             document.querySelector('body').style.pointerEvents = '';
-        }, 2000);
+            renderDOM.renderGameboards();
+        }, 100); // increase for final builds
     }
 
     const getGameState = () => {
@@ -168,6 +161,7 @@ const GameFactory = () => {
     }
 
     const changeGameState = () => {
+        console.log(gameState + 'changed ua')
         if(gameState === 'setup') gameState = 'playing';
         else gameState = 'setup';
     };
