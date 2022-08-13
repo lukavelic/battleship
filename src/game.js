@@ -136,25 +136,21 @@ const GameFactory = () => {
         const boardNode = document.querySelector(`#board-${getInactivePlayersGameboard().getBoardId()}`);
         boardNode.querySelector(`[data-x="${x}"][data-y="${y}"]`).removeEventListener('click', renderDOM.clickTile);
 
+        renderDOM.renderGameboards();
+
         if(checkForGameEnd()) {
             gameEnd();
             return
         } else changeTurn();
-
-        renderDOM.renderGameboards();
     };
 
     const changeTurn = () => {
         console.log('change turn fired')
         document.querySelector('body').style.pointerEvents = 'none';
 
-        setTimeout(() => {    
-            renderDOM.turnInfo();        
-            changeActivePlayer();
-            renderDOM.renderBlurBetweenTurns();
-            document.querySelector('body').style.pointerEvents = '';
-            renderDOM.renderGameboards();
-        }, 100); // increase for final builds
+        // renderDOM.changeTurn(turnTimeout);
+
+        changeActivePlayer();
     }
 
     const getGameState = () => {

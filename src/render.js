@@ -2,6 +2,7 @@ import {game} from "./index.js";
 
 const RenderFactory = () => {
     let submitCount = 0;
+    const turnTimeout = 500; 
 
     const initializeSubmitButton = () => {
         const submit = document.querySelector('#submit-name');
@@ -33,7 +34,7 @@ const RenderFactory = () => {
         `;
 
         ui.innerHTML = `
-            <div class="game-info" id="player-info"></div>
+            <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
             <div class="game-info" id="game-info"></div>
             <div class="game-info" id="error-info"></div>
             <div class="rotation-container" id="rotation-container">
@@ -106,9 +107,9 @@ const RenderFactory = () => {
             } else {
                 errorInfo('You are hitting the wrong board!');
             };
-        } else errorInfo('You are placing ships on the wrong board')
+        } else errorInfo('You are placing ships on the wrong board');
 
-        turnInfo(x, y);
+        changeTurn(turnTimeout,x, y);
     };
 
     const turnInfo = (x, y) => {
@@ -130,7 +131,7 @@ const RenderFactory = () => {
         } else document.querySelector('#error-info').innerText = '';
     };
 
-    const renderBlurBetweenTurns = () => {
+    const renderBlurBetweenTurns = (turnTimeout) => {
         const modal = document.querySelector('.modal');
 
         modal.style.display = 'block';
@@ -139,7 +140,21 @@ const RenderFactory = () => {
             (function() {
                 modal.style.display = 'none';
             })();
-        }, 200); // Increase timeout for final builds
+        }, turnTimeout);
+    };
+
+    const changeTurn = (turnTimeout, x, y) => {
+        setTimeout(() => {
+            renderBlurBetweenTurns(turnTimeout);
+
+            setTimeout(() => {
+                turnInfo(x, y);
+            }, turnTimeout);
+
+            document.querySelector('body').style.pointerEvents = '';
+            
+            renderGameboards();
+        }, turnTimeout);
     }
 
     const gameEndScreen = () => {
@@ -191,6 +206,7 @@ const RenderFactory = () => {
         turnInfo,
         rotateButton,
         renderBlurBetweenTurns,
+        changeTurn,
         gameEndScreen,
         removeRotateButton,
         updateTile, 
