@@ -39,12 +39,9 @@ const RenderFactory = () => {
             <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
             <div class="game-info" id="game-info"></div>
             <div class="game-info" id="error-info"></div>
-            <div class="end-turn">
+            <div class="button-container">
                 <input type="button" id="end-turn" value="End turn">
-            </div>
-            <div class="rotation-container" id="rotation-container">
-                <input type="button" id="rotate" value="Rotate Ship">
-                <div class="rotate-info" id="rotate-info">Placing ship in westerly direction</div>
+                <input type="button" id="rotate" value="Rotate Ship \n (East)">
             </div>
         `;
 
@@ -178,12 +175,12 @@ const RenderFactory = () => {
             const numberedDirection = game.gameboard1.getShipPlacingOrientation()
             let direction = ''
 
-            if(numberedDirection === 0) direction = 'northerly';
-            else if(numberedDirection === 1) direction = 'easterly';
-            else if(numberedDirection === 2) direction = 'southerly';
-            else direction = 'westerly'
+            if(numberedDirection === 0) direction = 'North';
+            else if(numberedDirection === 1) direction = 'East';
+            else if(numberedDirection === 2) direction = 'South';
+            else direction = 'West'
 
-            document.querySelector('#rotate-info').innerText = `Placing ship in ${direction} direction`;
+            // document.querySelector('#rotate-info').innerText = `Placing ship in ${direction} direction`;
         });
     };
 

@@ -10,6 +10,11 @@
     --ship-color: #0439D9;
 
     /* Gaps */
+
+
+    /* Other */
+
+    --border-radii: 5px;
 }
 
 body {
@@ -101,16 +106,19 @@ body {
     gap: 12px;
 }
 
-    .rotation-container {
+    .button-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        gap: 12px;
     }
+
     .tile {
         min-height: 30px;
         min-width: 30px;
         background-color: var(--tiles);
         outline: var(--dark) 1px solid;
-        border-radius: 10%;
+        border-radius: var(--border-radii);
     }
     
     .tile:hover {
@@ -130,6 +138,13 @@ body {
     }
 
 
+input[type="text"] {
+    padding: 5px;
+    border-radius: var(--border-radii);
+    border-style: none;
+    outline: 1px solid var(--dark);
+}
+
 /* Button */
 input[type="button"], 
 input[type="submit"]  {
@@ -137,7 +152,7 @@ input[type="submit"]  {
   background-clip: padding-box;
   background-color: var(--dark);
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: var(--border-radii);
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   color: #fff;
@@ -158,7 +173,7 @@ input[type="submit"]  {
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  width: auto;
+  width: 100%;
 }
 
 input[type="button"]:hover,
