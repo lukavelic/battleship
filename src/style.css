@@ -98,6 +98,30 @@ body {
                 gap: 5px;
             }
 
+                .tile {
+                    min-height: 30px;
+                    min-width: 30px;
+                    background-color: var(--tiles);
+                    outline: var(--dark) 1px solid;
+                    border-radius: var(--border-radii);
+                }
+                
+                .tile:hover {
+                    cursor: pointer;
+                }
+            
+                .ship {
+                    background-color: var(--ship-color);
+                }
+            
+                .miss {
+                    background-color: var(--miss);
+                }
+            
+                .hit {
+                    background-color: var(--hit);
+                }
+
 .ui {
     display: flex;
     flex-direction: column;
@@ -113,29 +137,12 @@ body {
         gap: 12px;
     }
 
-    .tile {
-        min-height: 30px;
-        min-width: 30px;
-        background-color: var(--tiles);
-        outline: var(--dark) 1px solid;
-        border-radius: var(--border-radii);
+    .game-info {
+        text-align: center;
+        padding: 12px;
     }
+
     
-    .tile:hover {
-        cursor: pointer;
-    }
-
-    .ship {
-        background-color: var(--ship-color);
-    }
-
-    .miss {
-        background-color: var(--miss);
-    }
-
-    .hit {
-        background-color: var(--hit);
-    }
 
 
 input[type="text"] {
