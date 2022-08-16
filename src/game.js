@@ -98,6 +98,11 @@ const GameFactory = () => {
                 };
             };
 
+            const board = document.querySelectorAll('.board');
+            board.forEach(element => {
+            element.style.pointerEvents = 'none'; 
+            });
+
             changeTurn();
         };
 
@@ -146,7 +151,7 @@ const GameFactory = () => {
 
     const changeTurn = () => {
         console.log('change turn fired')
-        document.querySelector('body').style.pointerEvents = 'none';
+        // document.querySelector('.board').style.pointerEvents = 'none';
 
         // renderDOM.changeTurn(turnTimeout);
 

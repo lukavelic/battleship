@@ -2,7 +2,7 @@ import {game} from "./index.js";
 
 const RenderFactory = () => {
     let submitCount = 0;
-    const turnTimeout = 500; 
+    const turnTimeout = 200; 
 
     const initializeSubmitButton = () => {
         const submit = document.querySelector('#submit-name');
@@ -39,14 +39,24 @@ const RenderFactory = () => {
             <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
             <div class="game-info" id="game-info"></div>
             <div class="game-info" id="error-info"></div>
+            <div class="end-turn">
+                <input type="button" id="end-turn" value="End turn">
+            </div>
             <div class="rotation-container" id="rotation-container">
                 <input type="button" id="rotate" value="Rotate Ship">
                 <div class="rotate-info" id="rotate-info">Placing ship in westerly direction</div>
             </div>
         `;
 
+        
+        console.log(game.getActivePlayer().getId())
+
         renderGameboards();
         rotateButton();
+        endTurnButton();
+
+        
+        console.log(game.getActivePlayer().getId())
     };
 
     const renderGameboards = () => {
@@ -99,6 +109,8 @@ const RenderFactory = () => {
         const x = parseInt(e.target.dataset.x);
         const y = parseInt(e.target.dataset.y);
 
+        console.log(game.getActivePlayer().getId())
+
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
             game.gameStartSetup(x, y);
             errorInfo();
@@ -110,8 +122,6 @@ const RenderFactory = () => {
                 errorInfo('You are hitting the wrong board!');
             };
         } else errorInfo('You are placing ships on the wrong board');
-
-        changeTurn(turnTimeout,x, y);
     };
 
     const turnInfo = (x, y) => {
@@ -133,7 +143,7 @@ const RenderFactory = () => {
         } else document.querySelector('#error-info').innerText = '';
     };
 
-    const renderBlurBetweenTurns = (turnTimeout) => {
+    const renderBlurBetweenTurns = () => {
         const modal = document.querySelector('.modal');
 
         modal.style.display = 'block';
@@ -145,19 +155,21 @@ const RenderFactory = () => {
         }, turnTimeout);
     };
 
-    const changeTurn = (turnTimeout, x, y) => {
+    const changeTurn = () => {
+        renderBlurBetweenTurns();
+
+        const board = document.querySelectorAll('.board');
+        board.forEach(element => {
+           element.style.pointerEvents = ''; 
+        });
+
         setTimeout(() => {
-            renderBlurBetweenTurns(turnTimeout);
-
-            setTimeout(() => {
-                turnInfo(x, y);
-            }, turnTimeout);
-
-            document.querySelector('body').style.pointerEvents = '';
-            
-            renderGameboards();
+            turnInfo(x, y);
         }, turnTimeout);
-    }
+        
+        // game.changeActivePlayer();
+        renderGameboards();
+    };
 
     const gameEndScreen = () => {
         document.querySelector('.container').innerHTML = `${game.getActivePlayer().getName()} is the winner`;
@@ -187,6 +199,14 @@ const RenderFactory = () => {
     const removeRotateButton = () => {
         document.querySelector('#rotate').remove();
         document.querySelector('#rotate-info').remove();
+    };
+
+    const endTurnButton = () => {
+        document.querySelector('#end-turn').addEventListener('click', function(e) {
+            changeTurn();
+        });
+
+        
     }
 
     const updateTile = (value, x, y) => {
