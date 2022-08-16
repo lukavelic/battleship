@@ -29,8 +29,10 @@ const RenderFactory = () => {
         const ui = document.querySelector('.ui');
 
         pageContainer.innerHTML = `
+        <div class="gameboards">
             <div class="board" id="board-1"></div>
             <div class="board" id="board-2"></div>
+        </div>
         `;
 
         ui.innerHTML = `
