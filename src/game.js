@@ -37,8 +37,6 @@ const GameFactory = () => {
             player2 = PlayerFactory(name, 2);
             changeActivePlayer();
         };
-
-        console.log(player1, player2);
     };
 
     const changeActivePlayer = () => {
@@ -83,7 +81,6 @@ const GameFactory = () => {
         const validity = getActivePlayersGameboard().checkIfPositionIsValid(x, y, shipLength);
 
         const executeTurn = () => {
-            console.log('execute turn player id' + game.getActivePlayer().getId())
             createShip(shipType, x, y, orientation);
             renderDOM.renderGameboards();
             
@@ -131,8 +128,6 @@ const GameFactory = () => {
         getInactivePlayersGameboard().hitTile(x, y);
 
         if(getInactivePlayersGameboard().getTileValue(x, y) === 2) {
-            console.log('hit ship');
-
             getInactivePlayer().getShipWithCoords(x, y).getHit();
         };
 
@@ -150,7 +145,6 @@ const GameFactory = () => {
     };
 
     const changeTurn = () => {
-        console.log('change turn fired')
         // document.querySelector('.board').style.pointerEvents = 'none';
 
         // renderDOM.changeTurn(turnTimeout);
@@ -163,7 +157,6 @@ const GameFactory = () => {
     }
 
     const changeGameState = () => {
-        console.log(gameState + 'changed ua')
         if(gameState === 'setup') gameState = 'playing';
         else gameState = 'setup';
     };

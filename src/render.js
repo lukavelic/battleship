@@ -48,15 +48,9 @@ const RenderFactory = () => {
             </div>
         `;
 
-        
-        console.log(game.getActivePlayer().getId())
-
         renderGameboards();
         rotateButton();
         endTurnButton();
-
-        
-        console.log(game.getActivePlayer().getId())
     };
 
     const renderGameboards = () => {
@@ -109,8 +103,6 @@ const RenderFactory = () => {
         const x = parseInt(e.target.dataset.x);
         const y = parseInt(e.target.dataset.y);
 
-        console.log(game.getActivePlayer().getId())
-
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
             game.gameStartSetup(x, y);
             errorInfo();
@@ -130,7 +122,6 @@ const RenderFactory = () => {
         const gameInfo = document.querySelector('#game-info');
 
         if(x && y && game.getGameState === 'playing') {
-            console.log('test');
             if(!game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
                 gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
             };
