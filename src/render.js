@@ -30,20 +30,35 @@ const RenderFactory = () => {
 
         pageContainer.innerHTML = `
         <div class="gameboards">
-            <div class="board" id="board-1"></div>
-            <div class="board" id="board-2"></div>
+            <div class="board-container">
+                <div class="board-player-name" id="board-player-name">${game.getPlayer(1).getName()}</div>
+                <div class="board" id="board-1"></div>
+            </div>
+            <div class="ui">
+                <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
+                <div class="game-info" id="game-info"></div>
+                <div class="game-info" id="error-info"></div>
+                <div class="button-container">
+                    <input type="button" id="end-turn" value="End turn">
+                    <input type="button" id="rotate" value="Rotate Ship \n (East)">
+                </div>
+            </div>
+            <div class="board-container">
+                <div class="board-player-name" id="board-player-name">${game.getPlayer(2).getName()}</div>
+                <div class="board" id="board-2"></div>
+            </div>
         </div>
         `;
 
-        ui.innerHTML = `
-            <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
-            <div class="game-info" id="game-info"></div>
-            <div class="game-info" id="error-info"></div>
-            <div class="button-container">
-                <input type="button" id="end-turn" value="End turn">
-                <input type="button" id="rotate" value="Rotate Ship \n (East)">
-            </div>
-        `;
+        // ui.innerHTML = `
+        //     <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
+        //     <div class="game-info" id="game-info"></div>
+        //     <div class="game-info" id="error-info"></div>
+        //     <div class="button-container">
+        //         <input type="button" id="end-turn" value="End turn">
+        //         <input type="button" id="rotate" value="Rotate Ship \n (East)">
+        //     </div>
+        // `;
 
         renderGameboards();
         rotateButton();
