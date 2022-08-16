@@ -166,9 +166,9 @@ const RenderFactory = () => {
            element.style.pointerEvents = ''; 
         });
 
-        setTimeout(() => {
-            turnInfo(x, y);
-        }, turnTimeout);
+        // setTimeout(() => {
+        //     turnInfo(x, y);
+        // }, turnTimeout);
         
         // game.changeActivePlayer();
         renderGameboards();
@@ -195,7 +195,7 @@ const RenderFactory = () => {
             else if(numberedDirection === 2) direction = 'South';
             else direction = 'West'
 
-            // document.querySelector('#rotate-info').innerText = `Placing ship in ${direction} direction`;
+            document.querySelector('#rotate').value = `Rotate Ship \n (${direction})`;
         });
     };
 
