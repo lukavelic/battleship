@@ -63,16 +63,6 @@ const RenderFactory = () => {
         </div>
         `;
 
-        // ui.innerHTML = `
-        //     <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
-        //     <div class="game-info" id="game-info"></div>
-        //     <div class="game-info" id="error-info"></div>
-        //     <div class="button-container">
-        //         <input type="button" id="end-turn" value="End turn">
-        //         <input type="button" id="rotate" value="Rotate Ship \n (East)">
-        //     </div>
-        // `;
-
         renderGameboards();
         rotateButton();
         endTurnButton();
@@ -137,7 +127,7 @@ const RenderFactory = () => {
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
             game.gameStartSetup(x, y);
             errorInfo();
-            
+
             // Restore click for end turn button
             document.querySelector('#end-turn').style.pointerEvents = '';
         } else if(game.getGameState() === 'playing') {
@@ -161,13 +151,6 @@ const RenderFactory = () => {
             console.log('turn info playing')
             document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn to attack!`;
         };
-        // const gameInfo = document.querySelector('#game-info');
-
-        // if(x && y && game.getGameState === 'playing') {
-        //     if(!game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
-        //         gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
-        //     };
-        // } else gameInfo.innerText = '';
     };
 
     const errorInfo = (msg) => {
@@ -224,15 +207,9 @@ const RenderFactory = () => {
             <input type="button" id="reload" value="Start New Game!" onClick="window.location.reload();">
         `;
 
-        // const reloadButton = document.querySelector('#reload').addEventListener('click', function(e) {
-
-        // })
-
         setTimeout(() => {
             modal.style.display = 'block';
         }, turnTimeout);
-
-        // document.querySelector('.container').innerHTML = `${game.getActivePlayer().getName()} is the winner`;
     };
 
     const rotateButton = () => {
@@ -266,16 +243,6 @@ const RenderFactory = () => {
         game.createAIPlayer();
 
         renderUI();
-    }
-
-    const updateTile = (value, x, y) => {
-        const tile = document.querySelector(`[data-x='${x}'][data-y='${y}']`);
-
-        // if(value === 1 || value === 2) {
-        //     tile.setAttribute('class', 'hit');
-        // } else {
-        //     tile.setAttribute('class', 'miss');
-        // };
     };
 
     return {
@@ -290,7 +257,6 @@ const RenderFactory = () => {
         changeTurn,
         gameEndScreen,
         removeRotateButton,
-        updateTile, 
         clickTile,
     };
 };

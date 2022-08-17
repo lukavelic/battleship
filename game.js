@@ -148,7 +148,7 @@ const GameFactory = () => {
         if(checkForGameEnd()) {
             gameEnd();
             return
-        } // else changeTurn();
+        };
     };
 
     const generateRandomCoordsForAI = () => {
