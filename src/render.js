@@ -21,6 +21,17 @@ const RenderFactory = () => {
             inputHeader.innerText = 'Input Player 2 Name';
 
             document.querySelector('#name-input').value = '';
+
+            // CPU Button
+
+            const inputContainer = document.querySelector('.player-input');
+
+            const button = document.createElement('input');
+            button.setAttribute('type', 'button');
+            button.setAttribute('id', 'cpu');
+            button.setAttribute('value', 'AI Enemy!');
+
+            inputContainer.appendChild(button)
         };
     };
 
