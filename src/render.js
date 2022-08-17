@@ -31,6 +31,8 @@ const RenderFactory = () => {
             button.setAttribute('id', 'cpu');
             button.setAttribute('value', 'AI Enemy!');
 
+            button.addEventListener('click', initiateAIPlayer)
+
             inputContainer.appendChild(button)
         };
     };
@@ -250,6 +252,12 @@ const RenderFactory = () => {
         document.querySelector('#end-turn').addEventListener('click', function(e) {
             changeTurn();
         });
+    };
+
+    const initiateAIPlayer = () => {
+        game.createAIPlayer();
+
+        renderUI();
     }
 
     const updateTile = (value, x, y) => {

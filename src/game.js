@@ -9,6 +9,7 @@ const GameFactory = () => {
 
     let player1;
     let player2;
+    let isAIActive = false;
     
     let activePlayer = 1;
     let playerCount = 1;
@@ -39,6 +40,12 @@ const GameFactory = () => {
         };
     };
 
+    const createAIPlayer = () => {
+        player2 = PlayerFactory('AI', 2);
+        isAIActive = true;
+        changeActivePlayer();
+    }
+
     const changeActivePlayer = () => {
         if(activePlayer === 1) {
             activePlayer = 2;
@@ -61,6 +68,10 @@ const GameFactory = () => {
         if(id === 1) return player1;
         else return player2;
     };
+
+    const checkIfAIIsActive = () => {
+        return isAIActive;
+    }
 
     // Game Start Setup
 
@@ -135,6 +146,13 @@ const GameFactory = () => {
             return
         } // else changeTurn();
     };
+
+    const generateRandomCoordsForAI = () => {
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+
+        return [x, y];
+    }
 
     const changeTurn = () => {
         const fleetSize = getPlayer(2).getFleet().length;
@@ -219,9 +237,11 @@ const GameFactory = () => {
         getPlayer, 
         getPlayerName, 
         createPlayer, 
+        createAIPlayer,
         changeActivePlayer, 
         getActivePlayer,
         getInactivePlayer,
+        checkIfAIIsActive,
         gameStartSetup, 
         getGameState, 
         changeGameState, 
