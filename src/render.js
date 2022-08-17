@@ -187,18 +187,24 @@ const RenderFactory = () => {
     };
 
     const changeTurn = () => {
-        renderBlurBetweenTurns();
+        if(game.checkIfAIIsActive() && game.getActivePlayer().getId() === 1) {
+            game.changeTurn();
+            game.aiTurn();
+        } else {
+            renderBlurBetweenTurns();
+    
+            setTimeout(() => {
+                turnInfo();
+            }, turnTimeout);
+
+            game.changeTurn();
+        };
 
         const board = document.querySelectorAll('.board');
         board.forEach(element => {
-           element.style.pointerEvents = ''; 
+            element.style.pointerEvents = ''; 
         });
 
-        setTimeout(() => {
-            turnInfo();
-        }, turnTimeout);
-        
-        game.changeTurn();
         renderGameboards();
     };
 
