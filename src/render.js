@@ -2,7 +2,7 @@ import {game} from "./index.js";
 
 const RenderFactory = () => {
     let submitCount = 0;
-    const turnTimeout = 2000; 
+    const turnTimeout = 200; 
 
     const initializeSubmitButton = () => {
         const submit = document.querySelector('#submit-name');
@@ -35,7 +35,7 @@ const RenderFactory = () => {
                 <div class="board" id="board-1"></div>
             </div>
             <div class="ui">
-                <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn</div>
+                <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn to place a ship!</div>
                 <div class="game-info" id="game-info"></div>
                 <div class="game-info" id="error-info"></div>
                 <div class="button-container">
@@ -128,16 +128,21 @@ const RenderFactory = () => {
         } else errorInfo('You are placing ships on the wrong board');
     };
 
-    const turnInfo = (x, y) => {
-        document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn`;
+    const turnInfo = () => {
+        if(game.getGameState() === 'setup') {
+            console.log('turn info setup')
+            document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn to place a ship!`;
+        } else {
+            console.log('turn info playing')
+            document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn to attack!`;
+        };
+        // const gameInfo = document.querySelector('#game-info');
 
-        const gameInfo = document.querySelector('#game-info');
-
-        if(x && y && game.getGameState === 'playing') {
-            if(!game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
-                gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
-            };
-        } else gameInfo.innerText = '';
+        // if(x && y && game.getGameState === 'playing') {
+        //     if(!game.getInactivePlayer().getShipWithCoords(x, y).getStatus()) {
+        //         gameInfo.innerText = `You sunk their ${game.getInactivePlayer().getShipWithCoords(x, y).getType()}`;
+        //     };
+        // } else gameInfo.innerText = '';
     };
 
     const errorInfo = (msg) => {
@@ -166,11 +171,11 @@ const RenderFactory = () => {
            element.style.pointerEvents = ''; 
         });
 
-        // setTimeout(() => {
-        //     turnInfo(x, y);
-        // }, turnTimeout);
+        setTimeout(() => {
+            turnInfo();
+        }, turnTimeout);
         
-        // game.changeActivePlayer();
+        game.changeTurn();
         renderGameboards();
     };
 
@@ -201,15 +206,12 @@ const RenderFactory = () => {
 
     const removeRotateButton = () => {
         document.querySelector('#rotate').remove();
-        document.querySelector('#rotate-info').remove();
     };
 
     const endTurnButton = () => {
         document.querySelector('#end-turn').addEventListener('click', function(e) {
             changeTurn();
         });
-
-        
     }
 
     const updateTile = (value, x, y) => {
