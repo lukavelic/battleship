@@ -63,6 +63,8 @@ const RenderFactory = () => {
         renderGameboards();
         rotateButton();
         endTurnButton();
+
+        document.querySelector('#end-turn').style.pointerEvents = 'none';
     };
 
     const renderGameboards = () => {
@@ -100,6 +102,10 @@ const RenderFactory = () => {
 
         tileListeners(1);
         tileListeners(2);
+
+        // Remove click from end turn button until a ship is placed
+
+        document.querySelector('#end-turn').style.pointerEvents = 'none';
     };
 
     const tileListeners = (id) => {
@@ -126,6 +132,10 @@ const RenderFactory = () => {
                 errorInfo('You are hitting the wrong board!');
             };
         } else errorInfo('You are placing ships on the wrong board');
+
+        // Restore click for end turn button
+
+        document.querySelector('#end-turn').style.pointerEvents = '';
     };
 
     const turnInfo = () => {
