@@ -164,8 +164,15 @@ const GameFactory = () => {
 
         if(getGameState() === 'setup') {
             try {
-                console.log('try gamestart')
+                const randNum = Math.floor(Math.random() * 10);
+                if(randNum < 5) {
+                    renderDOM.rotateButtonFunctionality();
+                };
+
                 gameStartSetup(x, y);
+
+                // game.gameboard1.resetShipPlacingOrientation();
+                // document.querySelector('#rotate').value = `Rotate Ship \n (East)`;
             } catch (error) {
                 console.log(error);
             };
