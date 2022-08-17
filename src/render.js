@@ -137,18 +137,20 @@ const RenderFactory = () => {
         if(game.getGameState() === 'setup' && game.getActivePlayer().getId() === boardId) {
             game.gameStartSetup(x, y);
             errorInfo();
+            
+            // Restore click for end turn button
+            document.querySelector('#end-turn').style.pointerEvents = '';
         } else if(game.getGameState() === 'playing') {
             if(game.getActivePlayer().getId() !== boardId) {
                 game.gameplay(x, y);
                 errorInfo();
+
+                // Restore click for end turn button
+                document.querySelector('#end-turn').style.pointerEvents = '';
             } else {
                 errorInfo('You are hitting the wrong board!');
             };
         } else errorInfo('You are placing ships on the wrong board');
-
-        // Restore click for end turn button
-
-        document.querySelector('#end-turn').style.pointerEvents = '';
     };
 
     const turnInfo = () => {
