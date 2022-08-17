@@ -83,24 +83,11 @@ const GameFactory = () => {
         const executeTurn = () => {
             createShip(shipType, x, y, orientation);
             renderDOM.renderGameboards();
-            
-            if(fleetSize === 4) {
-                if(getActivePlayer().getId() === 2) {
-                    changeGameState();
-                    renderDOM.removeRotateButton();
-                    return;
-                } else {
-                    changeTurn();
-                    return;
-                };
-            };
 
             const board = document.querySelectorAll('.board');
             board.forEach(element => {
             element.style.pointerEvents = 'none'; 
             });
-
-            changeTurn();
         };
 
         if(validity) {
@@ -138,18 +125,26 @@ const GameFactory = () => {
 
         renderDOM.renderGameboards();
 
+        const board = document.querySelectorAll('.board');
+        board.forEach(element => {
+        element.style.pointerEvents = 'none'; 
+        });
+
         if(checkForGameEnd()) {
             gameEnd();
             return
-        } else changeTurn();
+        } // else changeTurn();
     };
 
     const changeTurn = () => {
-        // document.querySelector('.board').style.pointerEvents = 'none';
+        const fleetSize = getPlayer(2).getFleet().length;
 
-        // renderDOM.changeTurn(turnTimeout);
-
-        changeActivePlayer();
+        if(getGameState() === 'setup' && fleetSize === 5) {
+            changeGameState();
+            renderDOM.removeRotateButton();
+            renderDOM.turnInfo();
+            changeActivePlayer();
+        } else changeActivePlayer();
     }
 
     const getGameState = () => {
