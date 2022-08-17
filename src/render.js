@@ -217,19 +217,25 @@ const RenderFactory = () => {
     };
 
     const rotateButtonFunctionality = () => {
-        game.gameboard1.changeShipPlacingOrientation();
-        game.gameboard2.changeShipPlacingOrientation();
+        if(game.checkIfAIIsActive() && game.getActivePlayer().getId() === 2) {
+            console.log('ai should be rotating')
+            game.gameboard2.changeShipPlacingOrientation();
+        } else {
+            console.log('both should be rotating')
+            game.gameboard1.changeShipPlacingOrientation();
+            game.gameboard2.changeShipPlacingOrientation();
 
-        const numberedDirection = game.gameboard1.getShipPlacingOrientation()
-        let direction = ''
+            const numberedDirection = game.gameboard1.getShipPlacingOrientation()
+            let direction = ''
 
-        if(numberedDirection === 0) direction = 'North';
-        else if(numberedDirection === 1) direction = 'East';
-        else if(numberedDirection === 2) direction = 'South';
-        else direction = 'West'
+            if(numberedDirection === 0) direction = 'North';
+            else if(numberedDirection === 1) direction = 'East';
+            else if(numberedDirection === 2) direction = 'South';
+            else direction = 'West'
 
-        document.querySelector('#rotate').value = `Rotate Ship \n (${direction})`;
-    }
+            document.querySelector('#rotate').value = `Rotate Ship \n (${direction})`
+        };
+    };
 
     const removeRotateButton = () => {
         document.querySelector('#rotate').remove();
