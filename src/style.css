@@ -43,7 +43,8 @@ body {
 
     .header-text {
         margin: 0;
-        font-size: 2rem;
+        font-size: 0.4rem;
+        height: fit-content;
     }
 
 .container {
@@ -221,6 +222,8 @@ input[type="submit"]:active {
   /* Modal Content/Box */
   .modal-content {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
     justify-content: center;
     background-color: var(--light);
     margin: 15% auto; /* 15% from the top and centered */

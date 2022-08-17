@@ -190,11 +190,28 @@ const RenderFactory = () => {
     };
 
     const gameEndScreen = () => {
-        document.querySelector('.container').innerHTML = `${game.getActivePlayer().getName()} is the winner`;
+        // Remove click from gameboards
 
-        // if(game.getInactivePlayer().getId() === 1) {
-        //     document.querySelector('.container').innerHTML = `${game.getInactivePlayer().getName()} is the winner`;
-        // } else document.querySelector('.container').innerHTML = `${game.getInactivePlayer().getName()} is the winner`;
+        document.querySelector('.gameboards').style.pointerEvents = 'none';
+
+
+        const modal = document.querySelector('.modal');
+        const modalContent = document.querySelector('.modal-content');
+
+        modalContent.innerHTML = `        
+            <p>${game.getActivePlayer().getName()} is the winner!</p>
+            <input type="button" id="reload" value="Start New Game!" onClick="window.location.reload();">
+        `;
+
+        // const reloadButton = document.querySelector('#reload').addEventListener('click', function(e) {
+
+        // })
+
+        setTimeout(() => {
+            modal.style.display = 'block';
+        }, turnTimeout);
+
+        // document.querySelector('.container').innerHTML = `${game.getActivePlayer().getName()} is the winner`;
     };
 
     const rotateButton = () => {
