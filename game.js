@@ -75,7 +75,7 @@ const GameFactory = () => {
 
     // Game Start Setup
 
-    const gameStartSetup = (x, y) => {        
+    const gameStartSetup = (x, y) => {
         const orientation = getActivePlayersGameboard().getShipPlacingOrientation();
         const fleetSize = getActivePlayer().getFleet().length;
         let shipType = '';
@@ -115,7 +115,11 @@ const GameFactory = () => {
             };
 
             executeTurn();
+
+            if(checkIfAIIsActive() && getActivePlayer().getId() === 2) changeTurn();
             
+        } else if (checkIfAIIsActive() && getActivePlayer().getId() === 2) {
+            aiTurn();
         } else throw new Error('Cannot place a ship here');
     };
 
@@ -152,7 +156,33 @@ const GameFactory = () => {
         const y = Math.floor(Math.random() * 10);
 
         return [x, y];
-    }
+    };
+
+    const aiTurn = () => {
+        let x = generateRandomCoordsForAI()[0];
+        let y = generateRandomCoordsForAI()[1];
+
+        if(getGameState() === 'setup') {
+            try {
+                console.log('try gamestart')
+                gameStartSetup(x, y);
+            } catch (error) {
+                console.log(error);
+            };
+        } else {
+            try {
+                gameplay(x, y);
+                changeTurn(); 
+            } catch (error) {
+                console.log(error);
+
+                x = generateRandomCoordsForAI()[0];
+                y = generateRandomCoordsForAI()[1];
+                
+                aiTurn();
+            };
+        };
+    };
 
     const changeTurn = () => {
         const fleetSize = getPlayer(2).getFleet().length;
@@ -163,6 +193,8 @@ const GameFactory = () => {
             renderDOM.turnInfo();
             changeActivePlayer();
         } else changeActivePlayer();
+
+        console.log(getActivePlayer().getId())
     }
 
     const getGameState = () => {
@@ -242,6 +274,7 @@ const GameFactory = () => {
         getActivePlayer,
         getInactivePlayer,
         checkIfAIIsActive,
+        aiTurn,
         gameStartSetup, 
         getGameState, 
         changeGameState, 
