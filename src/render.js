@@ -64,7 +64,7 @@ const RenderFactory = () => {
         `;
 
         renderGameboards();
-        rotateButton();
+        addListenerToRotateButton();
         endTurnButton();
 
         document.querySelector('#end-turn').style.pointerEvents = 'none';
@@ -212,22 +212,24 @@ const RenderFactory = () => {
         }, turnTimeout);
     };
 
-    const rotateButton = () => {
-        document.querySelector('#rotate').addEventListener('click', function(e) {
-            game.gameboard1.changeShipPlacingOrientation();
-            game.gameboard2.changeShipPlacingOrientation();
-
-            const numberedDirection = game.gameboard1.getShipPlacingOrientation()
-            let direction = ''
-
-            if(numberedDirection === 0) direction = 'North';
-            else if(numberedDirection === 1) direction = 'East';
-            else if(numberedDirection === 2) direction = 'South';
-            else direction = 'West'
-
-            document.querySelector('#rotate').value = `Rotate Ship \n (${direction})`;
-        });
+    const addListenerToRotateButton = () => {
+        document.querySelector('#rotate').addEventListener('click', rotateButtonFunctionality);
     };
+
+    const rotateButtonFunctionality = () => {
+        game.gameboard1.changeShipPlacingOrientation();
+        game.gameboard2.changeShipPlacingOrientation();
+
+        const numberedDirection = game.gameboard1.getShipPlacingOrientation()
+        let direction = ''
+
+        if(numberedDirection === 0) direction = 'North';
+        else if(numberedDirection === 1) direction = 'East';
+        else if(numberedDirection === 2) direction = 'South';
+        else direction = 'West'
+
+        document.querySelector('#rotate').value = `Rotate Ship \n (${direction})`;
+    }
 
     const removeRotateButton = () => {
         document.querySelector('#rotate').remove();
@@ -252,7 +254,7 @@ const RenderFactory = () => {
         renderGameboards, 
         tileListeners,
         turnInfo,
-        rotateButton,
+        rotateButtonFunctionality,
         renderBlurBetweenTurns,
         changeTurn,
         gameEndScreen,
