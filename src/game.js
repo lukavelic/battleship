@@ -165,7 +165,6 @@ const GameFactory = () => {
     };
 
     const aiTurn = (x, y) => {
-        console.log('ai turn start params', x, y, movesMadeSinceHit);
         let randomX = generateRandomCoordsForAI()[0];
         let randomY = generateRandomCoordsForAI()[1];
 
@@ -195,8 +194,6 @@ const GameFactory = () => {
             };
         };
 
-        console.log('next x and y and moves', nextX, nextY, movesMadeSinceHit)
-
         if(getGameState() === 'setup') {
             try {
                 // Rotation randomness
@@ -204,18 +201,14 @@ const GameFactory = () => {
                 if(randNum < 5) {
                     renderDOM.rotateButtonFunctionality();
                 };
-
+                
                 gameStartSetup(randomX, randomY);
-
-                // game.gameboard1.resetShipPlacingOrientation();
-                // document.querySelector('#rotate').value = `Rotate Ship \n (East)`;
             } catch (error) {
                 console.log(error);
             };
         } else {
             try {
                 if(x !== undefined && y !== undefined && movesMadeSinceHit < 5) {
-                    console.log('first if fired')
                     gameplay(nextX, nextY);
                     if(gameboard1.getTileValue(nextX, nextY) === 2) {
                         wasTheTileHit = true;
@@ -224,7 +217,6 @@ const GameFactory = () => {
                         hitY = nextY;
                     } else {
                         wasTheTileHit = false;
-                        // movesMadeSinceHit++;
                     }
                 } else {
                     gameplay(randomX, randomY);
@@ -249,10 +241,6 @@ const GameFactory = () => {
                 aiTurn(hitX, hitY);
             };
         };
-
-        // console.log(gameboard1.getTileValue(randomX, randomY))
-        console.log('end ai turn hit params', wasTheTileHit, hitX, hitY)
-        // console.log(gameboard1.getTileValue(nextX, nextY))
     };
 
     const getAiVariables = (str) => {
