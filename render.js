@@ -41,6 +41,12 @@ const RenderFactory = () => {
         const pageContainer = document.querySelector('#container');
         const ui = document.querySelector('.ui');
 
+        let startingString = ''
+        
+        if(game.checkIfAIIsActive()) {
+            startingString = `${game.getPlayer(1).getName()}, place your ships!`;
+        } else startingString = `${game.getPlayer(1).getName()}'s turn to place a ship!`;
+
         pageContainer.innerHTML = `
         <div class="gameboards">
             <div class="board-container">
@@ -48,7 +54,7 @@ const RenderFactory = () => {
                 <div class="board" id="board-1"></div>
             </div>
             <div class="ui">
-                <div class="game-info" id="player-info">${game.getActivePlayer().getName()}'s turn to place a ship!</div>
+                <div class="game-info" id="player-info">${startingString}</div>
                 <div class="game-info" id="game-info"></div>
                 <div class="game-info" id="error-info"></div>
                 <div class="button-container">
@@ -145,11 +151,17 @@ const RenderFactory = () => {
 
     const turnInfo = () => {
         if(game.getGameState() === 'setup') {
-            console.log('turn info setup')
             document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn to place a ship!`;
+
+            if(game.checkIfAIIsActive()) {
+                document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}, place your ships!`;
+            };
         } else {
-            console.log('turn info playing')
             document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}'s turn to attack!`;
+
+            if(game.checkIfAIIsActive()) {
+                document.querySelector('#player-info').innerText = `${game.getActivePlayer().getName()}, destroy the AI!`;
+            };
         };
     };
 
@@ -175,6 +187,7 @@ const RenderFactory = () => {
         if(game.checkIfAIIsActive() && game.getActivePlayer().getId() === 1) {
             game.changeTurn();
             game.aiTurn();
+            turnInfo();
         } else {
             renderBlurBetweenTurns();
     
