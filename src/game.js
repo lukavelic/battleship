@@ -15,6 +15,12 @@ const GameFactory = () => {
     let playerCount = 1;
     let gameState = 'setup';
 
+    // AI variables
+    let wasTheTileHit = false;
+    let movesMadeSinceHit = 0;
+    let hitX;
+    let hitY;
+
     // Player manipulation
 
     const getPlayerName = () => {
@@ -119,7 +125,7 @@ const GameFactory = () => {
             if(checkIfAIIsActive() && getActivePlayer().getId() === 2) changeTurn();
             
         } else if (checkIfAIIsActive() && getActivePlayer().getId() === 2) {
-            aiTurn();
+            aiTurn(hitX, hitY);
         } else throw new Error('Cannot place a ship here');
     };
 
@@ -158,18 +164,48 @@ const GameFactory = () => {
         return [x, y];
     };
 
-    const aiTurn = () => {
-        let x = generateRandomCoordsForAI()[0];
-        let y = generateRandomCoordsForAI()[1];
+    const aiTurn = (x, y) => {
+        console.log('ai turn start params', x, y, movesMadeSinceHit);
+        let randomX = generateRandomCoordsForAI()[0];
+        let randomY = generateRandomCoordsForAI()[1];
+
+        let nextX;
+        let nextY;
+
+        if(x !== undefined && y !== undefined) {
+            if(movesMadeSinceHit === 0) {
+                nextX = x + 1;
+                nextY = y;
+                movesMadeSinceHit++;
+            } else if(movesMadeSinceHit === 1) {
+                nextX = x;
+                nextY = y + 1;
+                movesMadeSinceHit++
+            } else if(movesMadeSinceHit === 2) {
+                nextX = x - 1;
+                nextY = y;
+                movesMadeSinceHit++;
+            } else if(movesMadeSinceHit === 3) {
+                nextX = x;
+                nextY = y - 1;
+                movesMadeSinceHit++;
+            } else {
+                nextX = x;
+                nextY = y - 1;
+            };
+        };
+
+        console.log('next x and y and moves', nextX, nextY, movesMadeSinceHit)
 
         if(getGameState() === 'setup') {
             try {
+                // Rotation randomness
                 const randNum = Math.floor(Math.random() * 10);
                 if(randNum < 5) {
                     renderDOM.rotateButtonFunctionality();
                 };
 
-                gameStartSetup(x, y);
+                gameStartSetup(randomX, randomY);
 
                 // game.gameboard1.resetShipPlacingOrientation();
                 // document.querySelector('#rotate').value = `Rotate Ship \n (East)`;
@@ -178,22 +214,51 @@ const GameFactory = () => {
             };
         } else {
             try {
-                gameplay(x, y);
+                if(x !== undefined && y !== undefined && movesMadeSinceHit < 5) {
+                    console.log('first if fired')
+                    gameplay(nextX, nextY);
+                    if(gameboard1.getTileValue(nextX, nextY) === 2) {
+                        wasTheTileHit = true;
+                        movesMadeSinceHit = 0;
+                        hitX = nextX;
+                        hitY = nextY;
+                    } else {
+                        wasTheTileHit = false;
+                        // movesMadeSinceHit++;
+                    }
+                } else {
+                    gameplay(randomX, randomY);
+                    if(gameboard1.getTileValue(randomX, randomY) === 2) {
+                        wasTheTileHit = true;
+                        movesMadeSinceHit = 0;
+                        hitX = randomX;
+                        hitY = randomY;
+                    };
+                };
+                
                 changeTurn(); 
+
             } catch (error) {
                 console.log(error);
+                
+                movesMadeSinceHit++;
 
                 x = generateRandomCoordsForAI()[0];
                 y = generateRandomCoordsForAI()[1];
                 
-                aiTurn();
+                aiTurn(hitX, hitY);
             };
         };
+
+        // console.log(gameboard1.getTileValue(randomX, randomY))
+        console.log('end ai turn hit params', wasTheTileHit, hitX, hitY)
+        // console.log(gameboard1.getTileValue(nextX, nextY))
     };
 
-    const aiHeatseeking = () => {
-        
-    }
+    const getAiVariables = (str) => {
+        if(str === 'x') return hitX;
+        else if(str === 'y') return hitY;
+    };
 
     const changeTurn = () => {
         const fleetSize = getPlayer(2).getFleet().length;
@@ -204,8 +269,6 @@ const GameFactory = () => {
             renderDOM.turnInfo();
             changeActivePlayer();
         } else changeActivePlayer();
-
-        console.log(getActivePlayer().getId())
     }
 
     const getGameState = () => {
@@ -286,6 +349,7 @@ const GameFactory = () => {
         getInactivePlayer,
         checkIfAIIsActive,
         aiTurn,
+        getAiVariables,
         gameStartSetup, 
         getGameState, 
         changeGameState, 

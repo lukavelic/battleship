@@ -185,8 +185,10 @@ const RenderFactory = () => {
 
     const changeTurn = () => {
         if(game.checkIfAIIsActive() && game.getActivePlayer().getId() === 1) {
+            const x = game.getAiVariables('x');
+            const y = game.getAiVariables('y');
             game.changeTurn();
-            game.aiTurn();
+            game.aiTurn(x, y);
             turnInfo();
         } else {
             renderBlurBetweenTurns();
