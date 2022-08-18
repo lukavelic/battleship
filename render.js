@@ -2,7 +2,7 @@ import {game} from "./index.js";
 
 const RenderFactory = () => {
     let submitCount = 0;
-    const turnTimeout = 200; 
+    const turnTimeout = 4000; 
 
     const initializeSubmitButton = () => {
         const submit = document.querySelector('#submit-name');
