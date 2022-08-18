@@ -191,6 +191,10 @@ const GameFactory = () => {
         };
     };
 
+    const aiHeatseeking = () => {
+        
+    }
+
     const changeTurn = () => {
         const fleetSize = getPlayer(2).getFleet().length;
 
